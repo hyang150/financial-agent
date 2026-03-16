@@ -1,0 +1,51 @@
+# Core Dependencies
+torch>=2.0.0
+transformers>=4.35.0
+accelerate>=0.24.0
+
+# LangChain Ecosystem
+langchain>=0.1.0
+langchain-community>=0.0.10
+langchain-huggingface>=0.0.1
+langchain-chroma>=0.1.0
+langchain-experimental>=0.0.47
+
+# Vector Databases & Embeddings
+chromadb>=0.4.18
+faiss-cpu>=1.7.4  # Use faiss-gpu if you have CUDA
+sentence-transformers>=2.2.2
+
+# Document Processing
+sec-edgar-downloader>=5.0.0
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+unstructured>=0.10.0  # Optional: for advanced document parsing
+
+# Fine-tuning (LoRA/QLoRA)
+peft>=0.6.0
+bitsandbytes>=0.41.0  # For 4-bit quantization
+datasets>=2.14.0
+trl>=0.7.0  # Transformer Reinforcement Learning (optional)
+
+# Agent Tools
+tavily-python>=0.3.0  # Web search
+python-dotenv>=1.0.0
+
+# Evaluation
+ragas>=0.1.0  # Optional: for RAG evaluation
+
+# Utilities
+numpy>=1.24.0
+pandas>=2.0.0
+tqdm>=4.65.0
+huggingface-hub>=0.19.0
+
+# Development (Optional)
+jupyter>=1.0.0
+ipykernel>=6.25.0
+black>=23.0.0
+pytest>=7.4.0
+
+# Note: For GPU support, install PyTorch with CUDA:
+# pip install torch --index-url https://download.pytorch.org/whl/cu118
+# (replace cu118 with your CUDA version, e.g., cu121 for CUDA 12.1)

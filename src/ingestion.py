@@ -25,9 +25,10 @@ def download_reports(tickers):
     
     for ticker in tickers:
         print(f"📥 正在下载 {ticker} 的财报...")
-        # 限制数量以加快演示速度
-        dl.get("10-K", ticker, limit=1, download_details=True)
-        dl.get("10-Q", ticker, limit=1, download_details=True)
+        # 限制数量以加快演示速度 (1份年报，1份季报)
+        # 实际项目中可以将 limit 设为 5 或更多
+        dl.get("10-K", ticker, limit=5, download_details=True)
+        dl.get("10-Q", ticker, limit=5, download_details=True)
     
     print("✅ 所有文件下载完成！")
 
