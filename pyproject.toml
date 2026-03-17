@@ -1,62 +1,30 @@
 [project]
-name = "finance-agent"
+name = "financial-agent"
 version = "0.1.0"
-description = "Multi-Tool RAG & Fine-tuned LLM for Financial Analysis"
-authors = [
-    {name = "Finance Agent Team"}
-]
+description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
-    "torch>=2.0.0",
-    "transformers>=4.35.0",
-    "accelerate>=0.24.0",
-    "langchain>=0.1.0",
-    "langchain-community>=0.0.10",
-    "langchain-huggingface>=0.0.1",
-    "langchain-chroma>=0.1.0",
-    "langchain-experimental>=0.0.47",
-    "chromadb>=0.4.18",
-    "faiss-cpu>=1.7.4",
-    "sentence-transformers>=2.2.2",
-    "sec-edgar-downloader>=5.0.0",
-    "beautifulsoup4>=4.12.0",
-    "lxml>=4.9.0",
-    "peft>=0.6.0",
-    "bitsandbytes>=0.41.0",
-    "datasets>=2.14.0",
-    "tavily-python>=0.3.0",
-    "python-dotenv>=1.0.0",
-    "numpy>=1.24.0",
-    "pandas>=2.0.0",
-    "tqdm>=4.65.0",
-    "huggingface-hub>=0.19.0",
+    "accelerate>=1.13.0",
+    "beautifulsoup4>=4.14.3",
+    "crawlee>=1.5.0",
+    "datasets>=4.8.2",
+    "langchain>=0.3.28",
+    "langchain-chroma>=0.2.2",
+    "langchain-community>=0.3.21",
+    "langchain-experimental>=0.3.4",
+    "langchain-huggingface>=0.3.1",
+    "langchain-text-splitters>=0.3.11",
+    "langgraph>=1.0.1",
+    "matplotlib>=3.10.8",
+    "numpy<2.0",
+    "openai>=2.29.0",
+    "rank-bm25>=0.2.2",
+    "scikit-learn>=1.8.0",
+    "sec-edgar-downloader>=5.1.0",
+    "sentence-transformers>=5.3.0",
+    "sqlalchemy>=2.0.48",
+    "tavily-python>=0.7.23",
+    "torch>=2.10.0",
+    "transformers>=5.3.0",
 ]
-
-[project.optional-dependencies]
-dev = [
-    "jupyter>=1.0.0",
-    "ipykernel>=6.25.0",
-    "black>=23.0.0",
-    "pytest>=7.4.0",
-]
-eval = [
-    "ragas>=0.1.0",
-]
-all = [
-    "unstructured>=0.10.0",
-    "trl>=0.7.0",
-]
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.black]
-line-length = 100
-target-version = ['py310']
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-python_files = "test_*.py"
-python_functions = "test_*"

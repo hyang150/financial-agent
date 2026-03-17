@@ -1,51 +1,118 @@
-# Core Dependencies
-torch>=2.0.0
-transformers>=4.35.0
-accelerate>=0.24.0
-
-# LangChain Ecosystem
-langchain>=0.1.0
-langchain-community>=0.0.10
-langchain-huggingface>=0.0.1
-langchain-chroma>=0.1.0
-langchain-experimental>=0.0.47
-
-# Vector Databases & Embeddings
-chromadb>=0.4.18
-faiss-cpu>=1.7.4  # Use faiss-gpu if you have CUDA
-sentence-transformers>=2.2.2
-
-# Document Processing
-sec-edgar-downloader>=5.0.0
-beautifulsoup4>=4.12.0
-lxml>=4.9.0
-unstructured>=0.10.0  # Optional: for advanced document parsing
-
-# Fine-tuning (LoRA/QLoRA)
-peft>=0.6.0
-bitsandbytes>=0.41.0  # For 4-bit quantization
-datasets>=2.14.0
-trl>=0.7.0  # Transformer Reinforcement Learning (optional)
-
-# Agent Tools
-tavily-python>=0.3.0  # Web search
-python-dotenv>=1.0.0
-
-# Evaluation
-ragas>=0.1.0  # Optional: for RAG evaluation
-
-# Utilities
-numpy>=1.24.0
-pandas>=2.0.0
-tqdm>=4.65.0
-huggingface-hub>=0.19.0
-
-# Development (Optional)
-jupyter>=1.0.0
-ipykernel>=6.25.0
-black>=23.0.0
-pytest>=7.4.0
-
-# Note: For GPU support, install PyTorch with CUDA:
-# pip install torch --index-url https://download.pytorch.org/whl/cu118
-# (replace cu118 with your CUDA version, e.g., cu121 for CUDA 12.1)
+aiohttp==3.9.0
+aiosignal==1.3.1
+annotated-types==0.6.0
+anyio==3.7.1
+async-timeout==5.0.1
+attrs==23.1.0
+Automat==20.2.0
+axial-positional-embedding==0.2.1
+Babel==2.8.0
+bcrypt==3.2.0
+beautifulsoup4==4.14.3
+blinker==1.4
+cachetools==7.0.2
+certifi==2023.11.17
+chardet==4.0.0
+charset-normalizer==3.3.2
+click==8.0.3
+colorama==0.4.4
+CoLT5-attention==0.10.18
+configobj==5.0.6
+constantly==15.1.0
+crawlee==1.4.0
+cryptography==3.4.8
+cycler==0.12.1
+dataclasses-json==0.6.2
+distro==1.7.0
+einops==0.7.0
+exceptiongroup==1.1.3
+filelock==3.13.1
+fonttools==4.45.1
+frozenlist==1.4.0
+fsspec==2023.10.0
+greenlet==3.0.1
+h11==0.14.0
+httpcore==1.0.2
+httplib2==0.20.2
+httpx==0.25.1
+hyperlink==21.0.0
+idna==3.4
+impit==0.11.0
+importlib-metadata==4.6.4
+incremental==21.3.0
+Jinja2==3.1.2
+joblib==1.3.2
+jsonpatch==1.33
+jsonpointer==2.4
+jsonschema==3.2.0
+keyring==23.5.0
+kiwisolver==1.4.5
+langchain==0.0.339
+langsmith==0.0.66
+local-attention==1.9.0
+MarkupSafe==2.1.3
+marshmallow==3.20.1
+matplotlib==3.8.2
+more-itertools==10.8.0
+mpmath==1.3.0
+multidict==6.0.4
+mypy-extensions==1.0.0
+netifaces==0.11.0
+networkx==3.2.1
+numpy==2.2.6
+oauthlib==3.2.0
+openai==1.3.3
+packaging==23.2
+Pillow==10.1.0
+product-key-memory==0.2.10
+propcache==0.4.1
+Protego==0.6.0
+psutil==7.2.2
+pyasn1==0.4.8
+pyasn1-modules==0.2.1
+pycurl==7.44.1
+pydantic==2.12.5
+pydantic-settings==2.13.1
+pydantic_core==2.41.5
+pyee==13.0.1
+Pygments==2.11.2
+PyHamcrest==2.0.2
+PyJWT==2.3.0
+pyOpenSSL==21.0.0
+pyparsing==2.4.7
+pyrsistent==0.18.1
+pyserial==3.5
+python-dateutil==2.8.2
+python-dotenv==1.2.2
+pytz==2023.3.post1
+PyYAML==5.4.1
+ranger-fm==1.9.4
+reformer-pytorch==1.4.4
+regex==2024.11.6
+requests==2.25.1
+requests-file==3.0.1
+scikit-learn==1.3.2
+scipy==1.11.4
+SecretStorage==3.3.1
+service-identity==18.1.0
+six==1.16.0
+sklearn==0.0.post11
+sniffio==1.3.0
+soupsieve==2.8.3
+SQLAlchemy==2.0.23
+tenacity==8.2.3
+term-image==0.7.2
+threadpoolctl==3.2.0
+tldextract==5.3.1
+Twisted==22.1.0
+typing-inspect==0.9.0
+typing-inspection==0.4.2
+typing_extensions==4.15.0
+tzdata==2023.3
+urllib3==2.1.0
+uroman==1.3.1.1
+uv==0.9.26
+yarl==1.23.0
+yt-dlp==2025.6.9
+zipp==1.0.0
+zope.interface==5.4.0
