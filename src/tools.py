@@ -4,7 +4,7 @@ Agent Tools: Search, Calculator, Python REPL, and RAG
 import os
 import re
 from typing import Optional, Type, Dict, Any
-from langchain.tools import BaseTool, Tool
+from langchain_core.tools import BaseTool, Tool
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_experimental.utilities import PythonREPL
 from pydantic import BaseModel, Field

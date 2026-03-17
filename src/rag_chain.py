@@ -5,8 +5,11 @@ import os
 from typing import List, Dict, Any, Optional
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
-from langchain.schema import Document
-from langchain.retrievers import EnsembleRetriever
+from langchain_core.documents import Document
+try:
+    from langchain.retrievers import EnsembleRetriever
+except ImportError:
+    from langchain_classic.retrievers import EnsembleRetriever
 from langchain_community.retrievers import BM25Retriever
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch

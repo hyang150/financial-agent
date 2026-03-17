@@ -1,12 +1,16 @@
 """
-Finance Agent: ReAct Agent with Tool Orchestration
+Finance Agent: LangGraph ReAct Agent with Tool Orchestration
 """
 import os
 from typing import Optional, Dict, Any, List
-from langchain.agents import AgentExecutor, create_react_agent
+
+# --- LangGraph & Modern LangChain Imports ---
+from langgraph.prebuilt import create_react_agent
+from langchain_core.messages import HumanMessage
+from langchain_community.chat_models.huggingface import ChatHuggingFace
 from langchain_huggingface import HuggingFacePipeline
-from langchain.prompts import PromptTemplate
-from langchain.schema import AgentAction, AgentFinish
+# --------------------------------------------
+
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 import torch
 from dotenv import load_dotenv
@@ -18,42 +22,22 @@ from config.model_config import ModelConfig, AgentConfig, RAGConfig, EmbeddingCo
 # Load environment variables
 load_dotenv()
 
-
-# ReAct Prompt Template
-REACT_PROMPT = """You are a financial analysis assistant with access to tools. Answer questions about companies and their financial reports.
-
-You have access to the following tools:
-
-{tools}
-
-Use the following format:
-
-Question: the input question you must answer
-Thought: you should always think about what to do
-Action: the action to take, should be one of [{tool_names}]
-Action Input: the input to the action
-Observation: the result of the action
-... (this Thought/Action/Action Input/Observation can repeat N times)
-Thought: I now know the final answer
-Final Answer: the final answer to the original input question
+# In LangGraph, the System Prompt acts as a state modifier.
+# We no longer need complex Thought/Action parsing templates.
+SYSTEM_PROMPT = """You are a highly capable financial analysis assistant. 
+You have access to a suite of tools to answer questions about companies, market events, and financial reports.
 
 IMPORTANT GUIDELINES:
-1. For questions about financial data in reports, use rag_search first
-2. For current information or recent events, use web_search
-3. For calculations, prefer calculator for simple math, python_repl for complex operations
-4. Always provide specific numbers and cite sources
-5. If you don't have enough information, say so clearly
-
-Begin!
-
-Question: {input}
-Thought: {agent_scratchpad}
+1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.
+2. For current news, recent market events, or real-time information, use 'web_search'.
+3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' for complex operations.
+4. Always provide specific numbers, metrics, and cite your sources when possible.
+5. If you cannot find the necessary information after using the tools, state clearly that you don't have enough data to answer accurately.
 """
-
 
 class FinanceAgent:
     """
-    Main Finance Agent with ReAct reasoning and tool orchestration
+    Main Finance Agent using LangGraph for robust state-based reasoning
     """
 
     def __init__(
@@ -65,7 +49,7 @@ class FinanceAgent:
         vector_db_path: str = "data/vector_db"
     ):
         """
-        Initialize Finance Agent
+        Initialize the LangGraph-based Finance Agent
 
         Args:
             model_config: LLM model configuration
@@ -76,12 +60,12 @@ class FinanceAgent:
         """
         self.model_config = model_config or ModelConfig()
         self.agent_config = agent_config or AgentConfig()
-        self.rag_config = rag_config or rag_config
+        self.rag_config = rag_config or RAGConfig()
         self.embedding_config = embedding_config or EmbeddingConfig()
         self.vector_db_path = vector_db_path
 
         # Initialize components
-        print("🚀 Initializing Finance Agent...")
+        print("🚀 Initializing Finance Agent with LangGraph...")
         self._init_llm()
         self._init_rag()
         self._init_tools()
@@ -90,7 +74,7 @@ class FinanceAgent:
         print("✅ Agent initialized successfully!")
 
     def _init_llm(self):
-        """Initialize the Language Model"""
+        """Initialize the Language Model and wrap it for Tool Calling"""
         print(f"📦 Loading LLM: {self.model_config.model_name}...")
 
         # Check if model should use GPU
@@ -117,7 +101,7 @@ class FinanceAgent:
             low_cpu_mem_usage=True
         )
 
-        # Create pipeline
+        # Create base pipeline
         pipe = pipeline(
             "text-generation",
             model=model,
@@ -130,9 +114,12 @@ class FinanceAgent:
             eos_token_id=self.tokenizer.eos_token_id,
         )
 
-        # Wrap in LangChain
-        self.llm = HuggingFacePipeline(pipeline=pipe)
-        print(f"✅ LLM loaded on {device}")
+        # Wrap in LangChain Pipeline
+        base_llm = HuggingFacePipeline(pipeline=pipe)
+        
+        # KEY CHANGE: Wrap the base LLM into a ChatModel to support native Tool Calling capabilities required by LangGraph
+        self.chat_model = ChatHuggingFace(llm=base_llm)
+        print(f"✅ LLM loaded and wrapped as ChatModel on {device}")
 
     def _init_rag(self):
         """Initialize RAG chain"""
@@ -162,35 +149,21 @@ class FinanceAgent:
         print(f"✅ {len(self.tools)} tools ready: {[t.name for t in self.tools]}")
 
     def _init_agent(self):
-        """Initialize ReAct agent"""
-        print("🤖 Creating ReAct agent...")
+        """Initialize LangGraph ReAct Agent"""
+        print("🤖 Creating LangGraph ReAct agent...")
 
-        # Create prompt
-        prompt = PromptTemplate.from_template(REACT_PROMPT)
-
-        # Create agent
-        agent = create_react_agent(
-            llm=self.llm,
+        # KEY CHANGE: One-line graph agent creation, replacing the heavy AgentExecutor
+        self.agent_executor = create_react_agent(
+            model=self.chat_model,
             tools=self.tools,
-            prompt=prompt
+            state_modifier=SYSTEM_PROMPT
         )
 
-        # Create executor
-        self.agent_executor = AgentExecutor(
-            agent=agent,
-            tools=self.tools,
-            verbose=self.agent_config.verbose,
-            max_iterations=self.agent_config.max_iterations,
-            max_execution_time=self.agent_config.max_execution_time,
-            handle_parsing_errors=True,
-            return_intermediate_steps=True
-        )
-
-        print("✅ Agent ready to use")
+        print("✅ Graph Agent ready to use")
 
     def query(self, question: str) -> Dict[str, Any]:
         """
-        Query the agent with a question
+        Query the agent with a question using Graph invocation
 
         Args:
             question: User question
@@ -202,12 +175,26 @@ class FinanceAgent:
         print("🤔 Agent is thinking...\n")
 
         try:
-            result = self.agent_executor.invoke({"input": question})
+            # KEY CHANGE: LangGraph inputs/outputs are standard Message arrays
+            inputs = {"messages": [HumanMessage(content=question)]}
+            
+            # Invoke the graph
+            result = self.agent_executor.invoke(inputs)
+            
+            # Extract final answer from the last message
+            messages = result["messages"]
+            final_answer = messages[-1].content
+            
+            # Collect tool call records for intermediate steps
+            intermediate_steps = [
+                f"Used Tool: {m.name} (Output: {m.content[:100]}...)" 
+                for m in messages if m.type == "tool"
+            ]
 
             return {
                 "question": question,
-                "answer": result.get("output", "No answer generated"),
-                "intermediate_steps": result.get("intermediate_steps", []),
+                "answer": final_answer,
+                "intermediate_steps": intermediate_steps,
                 "success": True
             }
 
@@ -223,7 +210,7 @@ class FinanceAgent:
     def chat(self):
         """Interactive chat mode"""
         print("\n" + "="*60)
-        print("💼 Finance Agent - Interactive Mode")
+        print("💼 Finance Agent (LangGraph) - Interactive Mode")
         print("="*60)
         print("\nAvailable commands:")
         print("  - Type your question to get an answer")
@@ -260,10 +247,9 @@ class FinanceAgent:
 
                 # Optionally show intermediate steps in verbose mode
                 if self.agent_config.verbose and result['intermediate_steps']:
-                    print("\n📝 Reasoning Steps:")
-                    for i, (action, observation) in enumerate(result['intermediate_steps'], 1):
-                        if isinstance(action, AgentAction):
-                            print(f"  Step {i}: {action.tool} - {action.tool_input}")
+                    print("\n📝 Reasoning Steps (Tools Used):")
+                    for i, step in enumerate(result['intermediate_steps'], 1):
+                        print(f"  Step {i}: {step}")
                     print()
 
             except KeyboardInterrupt:
@@ -303,7 +289,7 @@ def create_agent(
     vector_db_path: str = "data/vector_db"
 ) -> FinanceAgent:
     """
-    Factory function to create a Finance Agent
+    Factory function to create a LangGraph Finance Agent
 
     Args:
         model_config: Model configuration
@@ -326,7 +312,7 @@ def create_agent(
 
 if __name__ == "__main__":
     # Test the agent
-    print("🧪 Testing Finance Agent...\n")
+    print("🧪 Testing Finance Agent (LangGraph)...\n")
 
     try:
         # Create agent with default config
@@ -354,6 +340,6 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"❌ Error: {e}")
         print("\n💡 Tips:")
-        print("  1. Make sure you've run ingestion.py first")
-        print("  2. Check that your .env file has HF_TOKEN set")
-        print("  3. Ensure you have enough GPU memory (or use CPU)")
+        print("  1. Make sure you've run ingestion.py first to build the vector DB.")
+        print("  2. Check that your .env file has HF_TOKEN set.")
+        print("  3. Ensure you have enough GPU memory, or let it fallback to CPU.")
