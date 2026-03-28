@@ -1,15 +1,16 @@
 """
-Finance Agent: LangGraph ReAct Agent with Tool Orchestration
+金融分析 Agent 模块。
+
+基于 LangGraph 的 `create_react_agent` 编排 HuggingFace 聊天模型与多工具（RAG、搜索、计算、REPL），
+提供 `query` / `chat` / `batch_query` 等对外接口。
 """
 import os
 from typing import Optional, Dict, Any, List
 
-# --- LangGraph & Modern LangChain Imports ---
 from langgraph.prebuilt import create_react_agent
 from langchain_core.messages import HumanMessage
 from langchain_community.chat_models.huggingface import ChatHuggingFace
 from langchain_huggingface import HuggingFacePipeline
-# --------------------------------------------
 
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 import torch
@@ -19,11 +20,8 @@ from src.tools import create_tools
 from src.rag_chain import create_rag_chain
 from config.model_config import ModelConfig, AgentConfig, RAGConfig, EmbeddingConfig
 
-# Load environment variables
 load_dotenv()
 
-# In LangGraph, the System Prompt acts as a state modifier.
-# We no longer need complex Thought/Action parsing templates.
 SYSTEM_PROMPT = """You are a highly capable financial analysis assistant. 
 You have access to a suite of tools to answer questions about companies, market events, and financial reports.
 
@@ -35,9 +33,10 @@ IMPORTANT GUIDELINES:
 5. If you cannot find the necessary information after using the tools, state clearly that you don't have enough data to answer accurately.
 """
 
+
 class FinanceAgent:
     """
-    Main Finance Agent using LangGraph for robust state-based reasoning
+    金融 Agent：封装 LLM、RAG、工具列表与 LangGraph 执行图。
     """
 
     def __init__(
@@ -49,14 +48,14 @@ class FinanceAgent:
         vector_db_path: str = "data/vector_db"
     ):
         """
-        Initialize the LangGraph-based Finance Agent
+        依次初始化语言模型、RAG、工具与 ReAct 图。
 
-        Args:
-            model_config: LLM model configuration
-            agent_config: Agent behavior configuration
-            rag_config: RAG pipeline configuration
-            embedding_config: Embedding model configuration
-            vector_db_path: Path to vector database
+        参数:
+            model_config: HuggingFace 因果语言模型与生成参数。
+            agent_config: 交互与 REPL 安全等 Agent 行为配置。
+            rag_config: 检索与重排配置。
+            embedding_config: 向量嵌入配置。
+            vector_db_path: Chroma 持久化目录；不存在时 RAG 会失败并降级为无 rag_search。
         """
         self.model_config = model_config or ModelConfig()
         self.agent_config = agent_config or AgentConfig()
@@ -64,7 +63,6 @@ class FinanceAgent:
         self.embedding_config = embedding_config or EmbeddingConfig()
         self.vector_db_path = vector_db_path
 
-        # Initialize components
         print("🚀 Initializing Finance Agent with LangGraph...")
         self._init_llm()
         self._init_rag()
@@ -74,25 +72,21 @@ class FinanceAgent:
         print("✅ Agent initialized successfully!")
 
     def _init_llm(self):
-        """Initialize the Language Model and wrap it for Tool Calling"""
+        """加载 Tokenizer 与因果 LM，构建 text-generation pipeline 并包装为 ChatHuggingFace。"""
         print(f"📦 Loading LLM: {self.model_config.model_name}...")
 
-        # Check if model should use GPU
         device = self.model_config.device if torch.cuda.is_available() else "cpu"
         if device == "cpu":
             print("⚠️ CUDA not available, using CPU (this will be slow)")
 
-        # Load tokenizer
         self.tokenizer = AutoTokenizer.from_pretrained(
             self.model_config.model_name,
             trust_remote_code=True
         )
 
-        # Ensure pad token is set
         if self.tokenizer.pad_token is None:
             self.tokenizer.pad_token = self.tokenizer.eos_token
 
-        # Load model
         model = AutoModelForCausalLM.from_pretrained(
             self.model_config.model_name,
             torch_dtype=torch.float16 if device == "cuda" else torch.float32,
@@ -101,7 +95,6 @@ class FinanceAgent:
             low_cpu_mem_usage=True
         )
 
-        # Create base pipeline
         pipe = pipeline(
             "text-generation",
             model=model,
@@ -114,15 +107,12 @@ class FinanceAgent:
             eos_token_id=self.tokenizer.eos_token_id,
         )
 
-        # Wrap in LangChain Pipeline
         base_llm = HuggingFacePipeline(pipeline=pipe)
-        
-        # KEY CHANGE: Wrap the base LLM into a ChatModel to support native Tool Calling capabilities required by LangGraph
         self.chat_model = ChatHuggingFace(llm=base_llm)
         print(f"✅ LLM loaded and wrapped as ChatModel on {device}")
 
     def _init_rag(self):
-        """Initialize RAG chain"""
+        """创建 RAG 链；失败时打印警告并将 rag_chain 置为 None。"""
         print("📚 Initializing RAG system...")
 
         try:
@@ -138,7 +128,7 @@ class FinanceAgent:
             self.rag_chain = None
 
     def _init_tools(self):
-        """Initialize agent tools"""
+        """根据当前 rag_chain 与 agent_config 调用 create_tools 构建工具列表。"""
         print("🔧 Setting up tools...")
 
         self.tools = create_tools(
@@ -149,10 +139,9 @@ class FinanceAgent:
         print(f"✅ {len(self.tools)} tools ready: {[t.name for t in self.tools]}")
 
     def _init_agent(self):
-        """Initialize LangGraph ReAct Agent"""
+        """使用 LangGraph 预置 ReAct 图绑定 chat_model、tools 与系统提示。"""
         print("🤖 Creating LangGraph ReAct agent...")
 
-        # KEY CHANGE: One-line graph agent creation, replacing the heavy AgentExecutor
         self.agent_executor = create_react_agent(
             model=self.chat_model,
             tools=self.tools,
@@ -163,31 +152,27 @@ class FinanceAgent:
 
     def query(self, question: str) -> Dict[str, Any]:
         """
-        Query the agent with a question using Graph invocation
+        对用户问题执行一轮图调用，返回最终回复与工具调用摘要字符串列表。
 
-        Args:
-            question: User question
+        参数:
+            question: 用户自然语言问题。
 
-        Returns:
-            Dictionary with answer and metadata
+        返回:
+            字典包含 question、answer、intermediate_steps（每项为描述字符串）、success。
         """
         print(f"\n💬 Question: {question}")
         print("🤔 Agent is thinking...\n")
 
         try:
-            # KEY CHANGE: LangGraph inputs/outputs are standard Message arrays
             inputs = {"messages": [HumanMessage(content=question)]}
-            
-            # Invoke the graph
+
             result = self.agent_executor.invoke(inputs)
-            
-            # Extract final answer from the last message
+
             messages = result["messages"]
             final_answer = messages[-1].content
-            
-            # Collect tool call records for intermediate steps
+
             intermediate_steps = [
-                f"Used Tool: {m.name} (Output: {m.content[:100]}...)" 
+                f"Used Tool: {m.name} (Output: {m.content[:100]}...)"
                 for m in messages if m.type == "tool"
             ]
 
@@ -208,7 +193,7 @@ class FinanceAgent:
             }
 
     def chat(self):
-        """Interactive chat mode"""
+        """在终端循环读取用户输入，调用 query 并依 verbose 配置打印中间步骤。"""
         print("\n" + "="*60)
         print("💼 Finance Agent (LangGraph) - Interactive Mode")
         print("="*60)
@@ -220,10 +205,8 @@ class FinanceAgent:
 
         while True:
             try:
-                # Get user input
                 user_input = input("You: ").strip()
 
-                # Handle commands
                 if user_input.lower() in ['quit', 'exit', 'q']:
                     print("\n👋 Goodbye!")
                     break
@@ -239,13 +222,10 @@ class FinanceAgent:
                 if not user_input:
                     continue
 
-                # Query the agent
                 result = self.query(user_input)
 
-                # Display answer
                 print(f"\n🤖 Agent: {result['answer']}\n")
 
-                # Optionally show intermediate steps in verbose mode
                 if self.agent_config.verbose and result['intermediate_steps']:
                     print("\n📝 Reasoning Steps (Tools Used):")
                     for i, step in enumerate(result['intermediate_steps'], 1):
@@ -260,13 +240,13 @@ class FinanceAgent:
 
     def batch_query(self, questions: List[str]) -> List[Dict[str, Any]]:
         """
-        Process multiple questions in batch
+        顺序对多个问题调用 query，用于脚本或测试。
 
-        Args:
-            questions: List of questions
+        参数:
+            questions: 问题字符串列表。
 
-        Returns:
-            List of results
+        返回:
+            与 `query` 返回结构相同的字典列表。
         """
         results = []
 
@@ -289,17 +269,14 @@ def create_agent(
     vector_db_path: str = "data/vector_db"
 ) -> FinanceAgent:
     """
-    Factory function to create a LangGraph Finance Agent
+    工厂函数：构造 `FinanceAgent` 实例。
 
-    Args:
-        model_config: Model configuration
-        agent_config: Agent configuration
-        rag_config: RAG configuration
-        embedding_config: Embedding configuration
-        vector_db_path: Vector database path
+    参数:
+        model_config / agent_config / rag_config / embedding_config: 各子模块配置。
+        vector_db_path: 向量库路径。
 
-    Returns:
-        Configured Finance Agent
+    返回:
+        初始化完成的 FinanceAgent。
     """
     return FinanceAgent(
         model_config=model_config,
@@ -311,23 +288,18 @@ def create_agent(
 
 
 if __name__ == "__main__":
-    # Test the agent
     print("🧪 Testing Finance Agent (LangGraph)...\n")
 
     try:
-        # Create agent with default config
         agent = create_agent()
 
-        # Test queries
         test_questions = [
             "What was Apple's total revenue in their latest annual report?",
             "Calculate the compound annual growth rate if revenue grew from 100M to 150M over 3 years",
         ]
 
-        # Run batch query
         results = agent.batch_query(test_questions)
 
-        # Display results
         print("\n" + "="*60)
         print("📊 Results Summary")
         print("="*60)

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-Finance Agent - Main Entry Point
-Interactive CLI for financial analysis with RAG and Tool-Use capabilities
+Finance Agent 命令行入口。
+
+提供交互对话、单次提问、仅 RAG 检索三种模式；启动前检查 .env、HF_TOKEN 与向量库等前置条件。
 """
 import os
 import sys
@@ -9,7 +10,6 @@ import argparse
 from pathlib import Path
 from typing import Optional
 
-# Add src to path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from dotenv import load_dotenv
@@ -19,7 +19,7 @@ from config.model_config import ModelConfig, AgentConfig, RAGConfig, EmbeddingCo
 
 
 def print_banner():
-    """Print application banner"""
+    """在终端打印应用标题横幅。"""
     banner = """
 ╔═══════════════════════════════════════════════════════════╗
 ║                                                           ║
@@ -33,20 +33,22 @@ def print_banner():
 
 
 def check_prerequisites():
-    """Check if basic setup is complete"""
+    """
+    检查运行 Agent 所需的最基本条件：.env、HF_TOKEN、向量库目录是否存在。
+
+    返回:
+        全部满足返回 True，否则打印提示并返回 False。
+    """
     issues = []
 
-    # Check .env file
     if not Path(".env").exists():
         issues.append("❌ .env file not found. Copy .env.example to .env and configure it.")
 
-    # Check HF token
     load_dotenv()
     hf_token = os.getenv("HF_TOKEN")
     if not hf_token or hf_token.startswith("hf_xxx"):
         issues.append("❌ HF_TOKEN not configured in .env file")
 
-    # Check vector database
     if not Path("data/vector_db").exists():
         issues.append("⚠️  Vector database not found. Run 'python src/ingestion.py' first.")
 
@@ -61,11 +63,10 @@ def check_prerequisites():
 
 
 def run_interactive_mode(args):
-    """Run agent in interactive chat mode"""
+    """根据命令行参数组装配置并启动 FinanceAgent 的交互式对话循环。"""
     print("\n🚀 Initializing agent (this may take a minute)...\n")
 
     try:
-        # Configure agent
         model_config = ModelConfig(
             model_name=args.model,
             device=args.device,
@@ -77,14 +78,12 @@ def run_interactive_mode(args):
             allow_dangerous_code=args.allow_code,
         )
 
-        # Create agent
         agent = create_agent(
             model_config=model_config,
             agent_config=agent_config,
             vector_db_path=args.db_path
         )
 
-        # Start interactive chat
         agent.chat()
 
     except KeyboardInterrupt:
@@ -99,11 +98,10 @@ def run_interactive_mode(args):
 
 
 def run_single_query(args):
-    """Run a single query and exit"""
+    """执行单次提问并打印答案；verbose 时打印 agent 返回的 intermediate_steps 字符串列表。"""
     print("\n🚀 Initializing agent...\n")
 
     try:
-        # Configure agent
         model_config = ModelConfig(
             model_name=args.model,
             device=args.device,
@@ -115,17 +113,14 @@ def run_single_query(args):
             allow_dangerous_code=args.allow_code,
         )
 
-        # Create agent
         agent = create_agent(
             model_config=model_config,
             agent_config=agent_config,
             vector_db_path=args.db_path
         )
 
-        # Execute query
         result = agent.query(args.query)
 
-        # Display result
         print(f"\n{'='*60}")
         print(f"Question: {result['question']}")
         print(f"{'='*60}")
@@ -135,11 +130,8 @@ def run_single_query(args):
             print(f"\n{'='*60}")
             print("Reasoning Steps:")
             print(f"{'='*60}")
-            for i, (action, observation) in enumerate(result['intermediate_steps'], 1):
-                print(f"\nStep {i}:")
-                print(f"  Tool: {action.tool}")
-                print(f"  Input: {action.tool_input}")
-                print(f"  Output: {str(observation)[:200]}...")
+            for i, step in enumerate(result['intermediate_steps'], 1):
+                print(f"\nStep {i}: {step}")
 
     except Exception as e:
         print(f"\n❌ Error: {e}")
@@ -147,21 +139,18 @@ def run_single_query(args):
 
 
 def run_rag_only(args):
-    """Run RAG search only (no agent)"""
+    """不加载 LLM，仅使用 RAG 链检索并打印来源与可选全文上下文。"""
     print("\n🔍 Running RAG search...\n")
 
     try:
-        # Create RAG chain
         rag = create_rag_chain(
             vector_db_path=args.db_path,
             embedding_config=EmbeddingConfig(),
             rag_config=RAGConfig()
         )
 
-        # Execute search
         result = rag.get_context(args.query)
 
-        # Display results
         print(f"Query: {args.query}")
         print(f"\n{'='*60}")
         print(f"Retrieved {result['num_documents']} documents")
@@ -186,7 +175,7 @@ def run_rag_only(args):
 
 
 def main():
-    """Main entry point"""
+    """解析命令行参数并分发到交互 / 单次查询 / 仅 RAG 模式。"""
     parser = argparse.ArgumentParser(
         description="Finance Agent - AI-powered financial analysis assistant",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -211,7 +200,6 @@ For more information, see README.md
         """
     )
 
-    # Mode selection
     parser.add_argument(
         "--query", "-q",
         type=str,
@@ -224,7 +212,6 @@ For more information, see README.md
         help="Use RAG search only, without agent reasoning"
     )
 
-    # Model configuration
     parser.add_argument(
         "--model", "-m",
         type=str,
@@ -247,7 +234,6 @@ For more information, see README.md
         help="Sampling temperature (default: 0.1)"
     )
 
-    # Agent configuration
     parser.add_argument(
         "--verbose", "-v",
         action="store_true",
@@ -267,17 +253,13 @@ For more information, see README.md
         help="Path to vector database (default: data/vector_db)"
     )
 
-    # Parse arguments
     args = parser.parse_args()
 
-    # Print banner
     print_banner()
 
-    # Check prerequisites
     if not check_prerequisites():
         sys.exit(1)
 
-    # Route to appropriate mode
     if args.rag_only:
         if not args.query:
             print("❌ Error: --rag-only requires --query")

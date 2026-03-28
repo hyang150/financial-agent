@@ -1,28 +1,29 @@
 """
-Agent Tools: Search, Calculator, Python REPL, and RAG
+Agent 工具定义模块。
+
+提供计算器、Python REPL、Tavily 联网搜索、RAG 检索等 LangChain Tool，
+供 LangGraph ReAct Agent 绑定调用；`create_tools` 按依赖与配置组装工具列表。
 """
 import os
 import re
 from typing import Optional, Type, Dict, Any
-from langchain_core.tools import BaseTool, Tool
+from langchain_core.tools import BaseTool
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_experimental.utilities import PythonREPL
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 
 
 class CalculatorInput(BaseModel):
-    """Input schema for Calculator tool"""
+    """计算器工具的入参模式：数学表达式字符串。"""
     expression: str = Field(description="Mathematical expression to evaluate, e.g., '2 + 2' or '100 * 1.05'")
 
 
 class Calculator(BaseTool):
     """
-    Calculator tool for basic arithmetic operations.
-    Safer alternative to Python REPL for simple calculations.
+    简易计算器工具：在安全受限环境下对算术表达式求值。
     """
     name: str = "calculator"
     description: str = """
@@ -33,16 +34,13 @@ class Calculator(BaseTool):
     args_schema: Type[BaseModel] = CalculatorInput
 
     def _run(self, expression: str) -> str:
-        """Execute the calculation"""
+        """同步执行：校验关键字后在受限命名空间中 eval 表达式。"""
         try:
-            # Security: only allow safe mathematical operations
-            # Remove any dangerous characters/keywords
             dangerous_patterns = ['import', 'exec', 'eval', '__', 'open', 'file', 'os', 'sys']
             for pattern in dangerous_patterns:
                 if pattern in expression.lower():
                     return f"Error: Expression contains forbidden keyword: {pattern}"
 
-            # Evaluate safely with limited builtins
             allowed_names = {
                 'abs': abs, 'round': round, 'min': min, 'max': max,
                 'sum': sum, 'pow': pow, 'len': len
@@ -55,19 +53,18 @@ class Calculator(BaseTool):
             return f"Calculation error: {str(e)}"
 
     async def _arun(self, expression: str) -> str:
-        """Async version"""
+        """异步入口：委托给 `_run`。"""
         return self._run(expression)
 
 
 class PythonREPLInput(BaseModel):
-    """Input schema for Python REPL tool"""
+    """Python REPL 工具的入参：待执行的代码字符串。"""
     code: str = Field(description="Valid Python code to execute. Can include multiple lines and import statements.")
 
 
 class SafePythonREPL(BaseTool):
     """
-    Python REPL tool for executing code.
-    Useful for complex calculations, data processing, and analysis.
+    基于 LangChain Experimental 的 Python REPL；可选正则拦截危险 API。
     """
     name: str = "python_repl"
     description: str = """
@@ -89,15 +86,14 @@ class SafePythonREPL(BaseTool):
     allow_dangerous: bool = False
 
     def __init__(self, allow_dangerous: bool = False, **kwargs):
-        """Initialize with safety flag"""
+        """初始化 REPL 实例与是否允许危险代码开关。"""
         super().__init__(**kwargs)
         self.allow_dangerous = allow_dangerous
         self.python_repl = PythonREPL()
 
     def _run(self, code: str) -> str:
-        """Execute Python code"""
+        """同步执行代码；未开启 allow_dangerous 时用正则拦截部分危险写法。"""
         if not self.allow_dangerous:
-            # Check for dangerous operations
             dangerous_patterns = [
                 r'\bos\.',
                 r'\bsys\.',
@@ -120,19 +116,18 @@ class SafePythonREPL(BaseTool):
             return f"Execution error: {str(e)}"
 
     async def _arun(self, code: str) -> str:
-        """Async version"""
+        """异步入口：委托给 `_run`。"""
         return self._run(code)
 
 
 class WebSearchInput(BaseModel):
-    """Input schema for Web Search tool"""
+    """联网搜索工具的入参：搜索查询字符串。"""
     query: str = Field(description="Search query to find information on the web")
 
 
 class WebSearchTool(BaseTool):
     """
-    Web search tool using Tavily API.
-    Useful for finding up-to-date information not in the knowledge base.
+    使用 Tavily API 的网页搜索工具；未配置 API Key 时 `_run` 返回错误说明。
     """
     name: str = "web_search"
     description: str = """
@@ -150,7 +145,7 @@ class WebSearchTool(BaseTool):
     tavily_search: Optional[TavilySearchResults] = None
 
     def __init__(self, **kwargs):
-        """Initialize with Tavily API key"""
+        """读取环境变量中的 TAVILY_API_KEY，成功则构造 TavilySearchResults。"""
         super().__init__(**kwargs)
 
         tavily_api_key = os.getenv("TAVILY_API_KEY")
@@ -164,7 +159,7 @@ class WebSearchTool(BaseTool):
             )
 
     def _run(self, query: str) -> str:
-        """Execute web search"""
+        """调用 Tavily 并格式化为带标题、摘要、URL 的文本。"""
         if not self.tavily_search:
             return "Error: Web search is not configured. Please set TAVILY_API_KEY in .env file."
 
@@ -174,7 +169,6 @@ class WebSearchTool(BaseTool):
             if not results:
                 return "No results found."
 
-            # Format results
             formatted_results = ["Web Search Results:\n"]
             for i, result in enumerate(results, 1):
                 title = result.get('title', 'No title')
@@ -191,19 +185,18 @@ class WebSearchTool(BaseTool):
             return f"Search error: {str(e)}"
 
     async def _arun(self, query: str) -> str:
-        """Async version"""
+        """异步入口：委托给 `_run`。"""
         return self._run(query)
 
 
 class RAGToolInput(BaseModel):
-    """Input schema for RAG tool"""
+    """RAG 检索工具的入参：针对财报知识库的自然语言问题。"""
     query: str = Field(description="Question to search in the financial reports database")
 
 
 class RAGTool(BaseTool):
     """
-    RAG tool for searching financial reports in the vector database.
-    This tool has access to SEC 10-K and 10-Q filings.
+    封装 AdvancedRAGChain 的检索能力；需在创建后注入 `rag_chain` 实例。
     """
     name: str = "rag_search"
     description: str = """
@@ -219,24 +212,23 @@ class RAGTool(BaseTool):
     Returns relevant excerpts from the reports with source attribution.
     """
     args_schema: Type[BaseModel] = RAGToolInput
-    rag_chain: Any = None  # Will be injected when creating tools
+    rag_chain: Any = None
 
     def _run(self, query: str) -> str:
-        """Execute RAG search"""
+        """调用已注入的 RAG 链 `get_context`，拼接来源与上下文文本返回。"""
         if not self.rag_chain:
             return "Error: RAG system is not initialized. Please run ingestion.py first."
 
         try:
-            # Get context from RAG chain
             result = self.rag_chain.get_context(query)
 
-            # Format response
             response = [f"Found {result['num_documents']} relevant document(s):\n"]
 
             for source in result['sources']:
                 response.append(f"[{source['rank']}] {source['source']}")
-                if source['relevance_score'] != 'N/A':
-                    response.append(f"    Relevance: {source['relevance_score']:.4f}")
+                rel = source['relevance_score']
+                if rel != 'N/A':
+                    response.append(f"    Relevance: {float(rel):.4f}")
 
             response.append(f"\nContext:\n{result['context']}")
 
@@ -246,7 +238,7 @@ class RAGTool(BaseTool):
             return f"RAG search error: {str(e)}"
 
     async def _arun(self, query: str) -> str:
-        """Async version"""
+        """异步入口：委托给 `_run`。"""
         return self._run(query)
 
 
@@ -255,31 +247,27 @@ def create_tools(
     allow_dangerous_code: bool = False
 ) -> list:
     """
-    Create all agent tools
+    组装并返回当前 Agent 可用的工具列表。
 
-    Args:
-        rag_chain: RAG chain instance for document search
-        allow_dangerous_code: Whether to allow potentially dangerous code execution
+    参数:
+        rag_chain: 已初始化的 RAG 链；为 None 时不注册 rag_search。
+        allow_dangerous_code: 是否放宽 Python REPL 的危险模式检测。
 
-    Returns:
-        List of configured tools
+    返回:
+        LangChain BaseTool 实例列表。
     """
     tools = []
 
-    # Always include calculator
     tools.append(Calculator())
 
-    # Python REPL (with safety flag)
     tools.append(SafePythonREPL(allow_dangerous=allow_dangerous_code))
 
-    # Web search (if API key is available)
     web_search = WebSearchTool()
     if web_search.tavily_search:
         tools.append(web_search)
     else:
         print("ℹ️ Web search tool skipped (no API key)")
 
-    # RAG tool (if rag_chain is provided)
     if rag_chain:
         rag_tool = RAGTool()
         rag_tool.rag_chain = rag_chain
@@ -292,13 +280,13 @@ def create_tools(
 
 def get_tool_descriptions(tools: list) -> str:
     """
-    Get formatted descriptions of all tools
+    将工具名称与 description 格式化为一段可读文本（用于调试或展示）。
 
-    Args:
-        tools: List of tools
+    参数:
+        tools: 工具对象列表。
 
-    Returns:
-        Formatted string describing all tools
+    返回:
+        多行字符串。
     """
     descriptions = ["Available Tools:\n"]
 
@@ -309,16 +297,13 @@ def get_tool_descriptions(tools: list) -> str:
 
 
 if __name__ == "__main__":
-    # Test tools
     print("🧪 Testing Agent Tools...\n")
 
-    # Test Calculator
     print("1️⃣ Testing Calculator:")
     calc = Calculator()
     print(f"   2 + 2 = {calc._run('2 + 2')}")
     print(f"   (100 * 1.05) ** 2 = {calc._run('(100 * 1.05) ** 2')}\n")
 
-    # Test Python REPL
     print("2️⃣ Testing Python REPL:")
     repl = SafePythonREPL(allow_dangerous=False)
     code = """
@@ -329,7 +314,6 @@ print(f"Growth rates (%): {[f'{g:.1f}' for g in growth]}")
     """
     print(f"   {repl._run(code)}\n")
 
-    # Test Web Search
     print("3️⃣ Testing Web Search:")
     search = WebSearchTool()
     if search.tavily_search:

@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 """
-Environment Setup Checker for Finance Agent
-Validates that all dependencies and configurations are properly set up
+环境与工程结构自检脚本。
+
+检查 Python 版本、关键依赖、CUDA、.env 与密钥占位、目录及向量库是否存在，
+用于 README 中推荐的 `uv run setup_check.py` 流程。
 """
 import sys
 import os
 from pathlib import Path
 from typing import Tuple, List
 
-# Colors for terminal output
 class Colors:
+    """终端 ANSI 颜色码，用于高亮 PASS/FAIL 输出。"""
     GREEN = '\033[92m'
     RED = '\033[91m'
     YELLOW = '\033[93m'
@@ -19,14 +21,14 @@ class Colors:
 
 
 def print_header(text: str):
-    """Print section header"""
+    """打印分节标题（带蓝色分隔线）。"""
     print(f"\n{Colors.BOLD}{Colors.BLUE}{'='*60}{Colors.RESET}")
     print(f"{Colors.BOLD}{Colors.BLUE}{text}{Colors.RESET}")
     print(f"{Colors.BOLD}{Colors.BLUE}{'='*60}{Colors.RESET}\n")
 
 
 def print_check(name: str, passed: bool, message: str = ""):
-    """Print check result"""
+    """打印单项检查结果：名称、通过/失败状态与附加说明。"""
     status = f"{Colors.GREEN}✓ PASS{Colors.RESET}" if passed else f"{Colors.RED}✗ FAIL{Colors.RESET}"
     print(f"{status} {name}")
     if message:
@@ -36,7 +38,7 @@ def print_check(name: str, passed: bool, message: str = ""):
 
 
 def check_python_version() -> Tuple[bool, str]:
-    """Check Python version"""
+    """判断是否满足 Python >= 3.10。"""
     major, minor = sys.version_info[:2]
     version = f"{major}.{minor}"
 
@@ -47,7 +49,7 @@ def check_python_version() -> Tuple[bool, str]:
 
 
 def check_package(package_name: str, import_name: str = None) -> Tuple[bool, str]:
-    """Check if a package is installed"""
+    """尝试 import 指定模块并返回是否成功及版本信息。"""
     if import_name is None:
         import_name = package_name
 
@@ -60,7 +62,7 @@ def check_package(package_name: str, import_name: str = None) -> Tuple[bool, str
 
 
 def check_env_file() -> Tuple[bool, str]:
-    """Check if .env file exists"""
+    """检查项目根目录是否存在 .env 文件。"""
     env_path = Path(".env")
     if env_path.exists():
         return True, ".env file found"
@@ -69,7 +71,7 @@ def check_env_file() -> Tuple[bool, str]:
 
 
 def check_env_variables() -> List[Tuple[str, bool, str]]:
-    """Check environment variables"""
+    """校验 HF_TOKEN、TAVILY_API_KEY、SEC_EMAIL 等是否已配置（非占位）。"""
     from dotenv import load_dotenv
     load_dotenv()
 
@@ -102,7 +104,7 @@ def check_env_variables() -> List[Tuple[str, bool, str]]:
 
 
 def check_cuda() -> Tuple[bool, str]:
-    """Check CUDA availability"""
+    """检测 PyTorch 是否可用及当前是否有 CUDA 设备。"""
     try:
         import torch
         if torch.cuda.is_available():
@@ -116,7 +118,7 @@ def check_cuda() -> Tuple[bool, str]:
 
 
 def check_directories() -> List[Tuple[str, bool, str]]:
-    """Check required directories"""
+    """检查 config、data、src、notebooks 等约定目录是否存在。"""
     checks = []
 
     directories = {
@@ -138,7 +140,7 @@ def check_directories() -> List[Tuple[str, bool, str]]:
 
 
 def check_vector_db() -> Tuple[bool, str]:
-    """Check if vector database exists"""
+    """检查 data/vector_db 是否存在且非空目录。"""
     db_path = Path("data/vector_db")
     if db_path.exists() and any(db_path.iterdir()):
         return True, "Vector database found"
@@ -147,7 +149,7 @@ def check_vector_db() -> Tuple[bool, str]:
 
 
 def main():
-    """Run all checks"""
+    """依次执行全部检查项并打印汇总；全部关键项通过则返回 0，否则返回 1。"""
     print(f"\n{Colors.BOLD}Finance Agent - Environment Setup Checker{Colors.RESET}")
     print(f"Validating your environment...\n")
 

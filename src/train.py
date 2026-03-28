@@ -1,12 +1,13 @@
 """
-LoRA Fine-tuning for Tool-Use Enhancement
-Fine-tune Qwen2.5 or similar models to improve tool calling accuracy
+模型微调模块（LoRA / QLoRA）。
+
+用于在合成或自定义的 tool-use 风格语料上微调 Qwen2.5 等因果语言模型，提升工具调用相关能力；
+支持命令行生成数据集、启动 Trainer 训练与从磁盘加载 Peft 合并权重。
 """
 import os
 import json
 from typing import Optional, List, Dict, Any
 from dataclasses import dataclass
-from pathlib import Path
 
 import torch
 from transformers import (
@@ -22,18 +23,15 @@ from peft import (
     prepare_model_for_kbit_training,
     TaskType
 )
-from datasets import Dataset, load_dataset
+from datasets import Dataset
 from dotenv import load_dotenv
 
-from config.model_config import ModelConfig
-
-# Load environment variables
 load_dotenv()
 
 
 @dataclass
 class FineTuneConfig:
-    """Configuration for fine-tuning"""
+    """微调超参与路径配置（基座模型、LoRA 秩、训练轮数、4bit 量化等）。"""
     # Model settings
     base_model: str = "Qwen/Qwen2.5-7B-Instruct"
     output_dir: str = "models/finetuned"
@@ -58,15 +56,20 @@ class FineTuneConfig:
     optim: str = "paged_adamw_32bit"
 
     def __post_init__(self):
+        """若未指定 LoRA 目标层，则默认作用于 Qwen 类模型的注意力投影层。"""
         if self.lora_target_modules is None:
-            # Default for Qwen2.5
             self.lora_target_modules = ["q_proj", "k_proj", "v_proj", "o_proj"]
 
 
 def create_tool_use_dataset(output_file: str = "data/tool_use_dataset.jsonl"):
     """
-    Create synthetic tool-use training dataset
-    In practice, you would collect real examples or use existing datasets
+    生成少量合成 ReAct 风格样本并写入 JSONL，便于快速跑通训练流程。
+
+    参数:
+        output_file: 输出文件路径。
+
+    返回:
+        写入的文件路径字符串。
     """
     examples = [
         {
@@ -145,7 +148,7 @@ Final Answer: Tesla's main risk factors include: 1) Supply chain disruptions, 2)
 
 
 def format_instruction(example: Dict[str, str]) -> Dict[str, str]:
-    """Format example into instruction-following format"""
+    """将单条 instruction/response 拼成带 ChatML 风格标记的完整文本字段。"""
     text = f"""<|im_start|>system
 You are a financial analysis assistant with access to tools. Use the ReAct format to answer questions.
 <|im_end|>
@@ -160,7 +163,7 @@ You are a financial analysis assistant with access to tools. Use the ReAct forma
 
 
 def load_and_prepare_dataset(dataset_path: str, tokenizer) -> Dataset:
-    """Load and tokenize dataset"""
+    """从 JSONL 读取样本，格式化后批量分词，返回 HuggingFace Dataset。"""
     # Load JSONL file
     data = []
     with open(dataset_path, 'r') as f:
@@ -173,8 +176,8 @@ def load_and_prepare_dataset(dataset_path: str, tokenizer) -> Dataset:
     # Format instructions
     dataset = dataset.map(format_instruction, remove_columns=dataset.column_names)
 
-    # Tokenize
     def tokenize_function(examples):
+        """对 map 批数据执行分词，供因果语言建模使用。"""
         return tokenizer(
             examples["text"],
             truncation=True,
@@ -193,7 +196,7 @@ def load_and_prepare_dataset(dataset_path: str, tokenizer) -> Dataset:
 
 
 def setup_model_for_training(config: FineTuneConfig):
-    """Setup model and tokenizer for LoRA fine-tuning"""
+    """加载 Tokenizer、（可选 4bit）基座模型，挂载 LoRA 并返回 (model, tokenizer)。"""
     print(f"📦 Loading base model: {config.base_model}")
 
     # Load tokenizer
@@ -257,12 +260,12 @@ def train(
     resume_from_checkpoint: Optional[str] = None
 ):
     """
-    Main training function
+    组装 Trainer 并执行训练，最后在 output_dir 保存适配器与分词器。
 
-    Args:
-        config: Fine-tuning configuration
-        dataset_path: Path to training dataset
-        resume_from_checkpoint: Path to checkpoint to resume from
+    参数:
+        config: 微调配置；默认新建 FineTuneConfig。
+        dataset_path: 训练 JSONL；None 时使用默认路径并在缺失时自动生成合成数据。
+        resume_from_checkpoint: 断点目录，传入则从中恢复。
     """
     config = config or FineTuneConfig()
 
@@ -327,13 +330,13 @@ def train(
 
 def load_finetuned_model(model_path: str):
     """
-    Load a fine-tuned model
+    在默认基座模型上加载指定目录下的 Peft 权重与分词器。
 
-    Args:
-        model_path: Path to fine-tuned model
+    参数:
+        model_path: 含 adapter 与 tokenizer 的目录。
 
-    Returns:
-        model, tokenizer
+    返回:
+        (PeftModel 包装后的 model, tokenizer)。
     """
     from peft import PeftModel
 
@@ -364,6 +367,7 @@ def load_finetuned_model(model_path: str):
 if __name__ == "__main__":
     import argparse
 
+    # 命令行入口：生成数据集或启动 HF Trainer 微调
     parser = argparse.ArgumentParser(description="Fine-tune model for tool use")
     parser.add_argument("--create-dataset", action="store_true", help="Create synthetic dataset")
     parser.add_argument("--train", action="store_true", help="Run training")

@@ -1,5 +1,8 @@
 """
-RAG Chain Implementation with Hybrid Search and Reranking
+RAG 检索链模块。
+
+负责从 Chroma 向量库加载文档，支持语义检索 + BM25 混合检索，
+以及 Cross-Encoder 重排序；对外提供检索、拼上下文等能力，供 Agent 与 CLI 调用。
 """
 import os
 from typing import List, Dict, Any, Optional
@@ -17,10 +20,7 @@ from config.model_config import EmbeddingConfig, RAGConfig
 
 class AdvancedRAGChain:
     """
-    Advanced RAG Pipeline with:
-    - Hybrid Search (BM25 + Semantic)
-    - Cross-Encoder Reranking
-    - Source attribution
+    高级 RAG 流水线：混合检索（BM25 + 向量）+ Cross-Encoder 重排序 + 来源标注。
     """
 
     def __init__(
@@ -30,18 +30,17 @@ class AdvancedRAGChain:
         rag_config: Optional[RAGConfig] = None
     ):
         """
-        Initialize RAG Chain
+        初始化 RAG 链：加载嵌入模型、向量库、检索器与（可选）重排序模型。
 
-        Args:
-            vector_db_path: Path to the vector database
-            embedding_config: Embedding model configuration
-            rag_config: RAG pipeline configuration
+        参数:
+            vector_db_path: Chroma 持久化目录路径。
+            embedding_config: 嵌入模型配置，默认使用 EmbeddingConfig。
+            rag_config: 检索与重排参数，默认使用 RAGConfig。
         """
         self.embedding_config = embedding_config or EmbeddingConfig()
         self.rag_config = rag_config or RAGConfig()
         self.vector_db_path = vector_db_path
 
-        # Initialize embedding model
         print("📦 Loading embedding model...")
         self.embeddings = HuggingFaceEmbeddings(
             model_name=self.embedding_config.model_name,
@@ -49,7 +48,6 @@ class AdvancedRAGChain:
             encode_kwargs={'normalize_embeddings': self.embedding_config.normalize_embeddings}
         )
 
-        # Load vector database
         print("📚 Loading vector database...")
         if not os.path.exists(vector_db_path):
             raise ValueError(
@@ -62,10 +60,8 @@ class AdvancedRAGChain:
             embedding_function=self.embeddings
         )
 
-        # Initialize retrievers
         self._init_retrievers()
 
-        # Initialize reranker (cross-encoder)
         if self.rag_config.rerank_top_k > 0:
             print("🔄 Loading reranker model...")
             self._init_reranker()
@@ -74,18 +70,15 @@ class AdvancedRAGChain:
             self.reranker_tokenizer = None
 
     def _init_retrievers(self):
-        """Initialize semantic and BM25 retrievers"""
-        # Semantic retriever
+        """初始化语义检索器；若开启混合检索则再构建 BM25 与融合检索器。"""
         self.semantic_retriever = self.vectorstore.as_retriever(
             search_kwargs={"k": self.rag_config.retrieval_top_k}
         )
 
-        # BM25 retriever (keyword-based)
         if self.rag_config.use_hybrid_search:
             print("🔍 Initializing hybrid search (Semantic + BM25)...")
             all_docs = self.vectorstore.get()
             if all_docs and 'documents' in all_docs:
-                # Create Document objects for BM25
                 docs_for_bm25 = [
                     Document(page_content=doc, metadata=meta)
                     for doc, meta in zip(
@@ -96,7 +89,6 @@ class AdvancedRAGChain:
                 self.bm25_retriever = BM25Retriever.from_documents(docs_for_bm25)
                 self.bm25_retriever.k = self.rag_config.retrieval_top_k
 
-                # Ensemble retriever combining both
                 self.retriever = EnsembleRetriever(
                     retrievers=[self.semantic_retriever, self.bm25_retriever],
                     weights=[self.rag_config.semantic_weight, self.rag_config.bm25_weight]
@@ -108,7 +100,7 @@ class AdvancedRAGChain:
             self.retriever = self.semantic_retriever
 
     def _init_reranker(self):
-        """Initialize cross-encoder reranker"""
+        """加载 Cross-Encoder 重排序模型与分词器；若存在 GPU 则放到 CUDA。"""
         self.reranker_tokenizer = AutoTokenizer.from_pretrained(
             self.rag_config.reranker_model
         )
@@ -117,28 +109,26 @@ class AdvancedRAGChain:
         )
         self.reranker_model.eval()
 
-        # Move to GPU if available
         if torch.cuda.is_available():
             self.reranker_model = self.reranker_model.to('cuda')
 
     def _rerank_documents(self, query: str, documents: List[Document]) -> List[Document]:
         """
-        Rerank documents using cross-encoder
+        使用 Cross-Encoder 对候选文档打分并按分数降序截取 top-k。
 
-        Args:
-            query: User query
-            documents: List of retrieved documents
+        参数:
+            query: 用户查询。
+            documents: 初检得到的文档列表。
 
-        Returns:
-            Reranked list of documents
+        返回:
+            重排后的文档列表（长度不超过 rag_config.rerank_top_k），
+            并在 metadata 中写入与文档对齐的 relevance_score 与 rank。
         """
         if not self.reranker_model or len(documents) == 0:
             return documents
 
-        # Prepare pairs for reranking
         pairs = [[query, doc.page_content] for doc in documents]
 
-        # Compute relevance scores
         with torch.no_grad():
             inputs = self.reranker_tokenizer(
                 pairs,
@@ -154,15 +144,14 @@ class AdvancedRAGChain:
             scores = self.reranker_model(**inputs, return_dict=True).logits.view(-1).float()
             scores = scores.cpu().numpy()
 
-        # Sort documents by score (descending)
         doc_score_pairs = list(zip(documents, scores))
         doc_score_pairs.sort(key=lambda x: x[1], reverse=True)
 
-        # Return top-k reranked documents
-        reranked_docs = [doc for doc, score in doc_score_pairs[:self.rag_config.rerank_top_k]]
+        # 按排序后的 (文档, 分数) 对截取 top-k，保证 metadata 中的分数与文档一一对应
+        top_pairs = doc_score_pairs[:self.rag_config.rerank_top_k]
+        reranked_docs = [doc for doc, _ in top_pairs]
 
-        # Add relevance scores to metadata
-        for i, (doc, score) in enumerate(zip(reranked_docs, scores[:self.rag_config.rerank_top_k])):
+        for i, (doc, score) in enumerate(top_pairs):
             doc.metadata['relevance_score'] = float(score)
             doc.metadata['rank'] = i + 1
 
@@ -170,22 +159,20 @@ class AdvancedRAGChain:
 
     def retrieve(self, query: str, with_rerank: bool = True) -> List[Document]:
         """
-        Retrieve relevant documents for a query
+        根据查询检索相关文档；可选在初检后做 Cross-Encoder 重排。
 
-        Args:
-            query: User query
-            with_rerank: Whether to apply reranking
+        参数:
+            query: 用户问题。
+            with_rerank: 是否启用重排序（需已加载 reranker）。
 
-        Returns:
-            List of relevant documents
+        返回:
+            文档列表。
         """
         print(f"🔍 Retrieving documents for: '{query}'")
 
-        # Initial retrieval
         documents = self.retriever.get_relevant_documents(query)
         print(f"📄 Retrieved {len(documents)} initial documents")
 
-        # Rerank if enabled
         if with_rerank and self.reranker_model:
             print(f"🔄 Reranking to top {self.rag_config.rerank_top_k}...")
             documents = self._rerank_documents(query, documents)
@@ -195,27 +182,24 @@ class AdvancedRAGChain:
 
     def get_context(self, query: str, with_rerank: bool = True) -> Dict[str, Any]:
         """
-        Get retrieval context for a query
+        检索并拼接可供 LLM 使用的上下文字符串，同时返回结构化来源信息。
 
-        Args:
-            query: User query
-            with_rerank: Whether to apply reranking
+        参数:
+            query: 用户问题。
+            with_rerank: 是否对初检结果做重排。
 
-        Returns:
-            Dictionary with context and source information
+        返回:
+            包含 context、documents、sources、num_documents 的字典。
         """
         documents = self.retrieve(query, with_rerank)
 
-        # Format context
         context_parts = []
         sources = []
 
         for i, doc in enumerate(documents, 1):
-            # Extract source info
             source = doc.metadata.get('source', 'Unknown')
             relevance = doc.metadata.get('relevance_score', 'N/A')
 
-            # Format context entry
             context_parts.append(f"[Document {i}]\n{doc.page_content}\n")
             sources.append({
                 'rank': i,
@@ -233,14 +217,14 @@ class AdvancedRAGChain:
 
     def similarity_search(self, query: str, k: int = 5) -> List[Document]:
         """
-        Simple similarity search without reranking
+        纯向量相似度检索，不经过 BM25 融合与重排序。
 
-        Args:
-            query: Search query
-            k: Number of results
+        参数:
+            query: 查询文本。
+            k: 返回条数。
 
-        Returns:
-            List of similar documents
+        返回:
+            最相近的 k 条文档。
         """
         return self.vectorstore.similarity_search(query, k=k)
 
@@ -251,15 +235,15 @@ def create_rag_chain(
     rag_config: Optional[RAGConfig] = None
 ) -> AdvancedRAGChain:
     """
-    Factory function to create a RAG chain
+    工厂函数：创建并返回配置好的 AdvancedRAGChain 实例。
 
-    Args:
-        vector_db_path: Path to vector database
-        embedding_config: Embedding configuration
-        rag_config: RAG configuration
+    参数:
+        vector_db_path: 向量库路径。
+        embedding_config: 嵌入配置。
+        rag_config: RAG 配置。
 
-    Returns:
-        Configured RAG chain
+    返回:
+        AdvancedRAGChain 实例。
     """
     return AdvancedRAGChain(
         vector_db_path=vector_db_path,
@@ -269,14 +253,12 @@ def create_rag_chain(
 
 
 if __name__ == "__main__":
-    # Test the RAG chain
+    # 直接运行本文件时做一次 RAG 链路自检（需已执行 ingestion 构建向量库）
     print("🧪 Testing RAG Chain...")
 
     try:
-        # Create RAG chain
         rag = create_rag_chain()
 
-        # Test query
         test_query = "What was Apple's revenue in the last fiscal year?"
         result = rag.get_context(test_query)
 
