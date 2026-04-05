@@ -170,7 +170,7 @@ class AdvancedRAGChain:
         """
         print(f"🔍 Retrieving documents for: '{query}'")
 
-        documents = self.retriever.get_relevant_documents(query)
+        documents = self.retriever.invoke(query)
         print(f"📄 Retrieved {len(documents)} initial documents")
 
         if with_rerank and self.reranker_model:
