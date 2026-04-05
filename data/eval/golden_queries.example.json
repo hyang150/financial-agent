@@ -1,0 +1,24 @@
+{
+  "version": "1",
+  "description": "复制本文件为 golden_queries.json 后按需修改。must_contain 为应在检索上下文中出现的词（不区分大小写）；source_should_contain 为检索结果 source 路径中应包含的子串（如 ticker）。",
+  "items": [
+    {
+      "id": "apple_risk",
+      "query": "What are the main risk factors discussed for Apple?",
+      "must_contain": ["risk", "Apple"],
+      "source_should_contain": ["AAPL"]
+    },
+    {
+      "id": "microsoft_revenue",
+      "query": "Microsoft revenue or financial performance discussion",
+      "must_contain": ["revenue", "Microsoft"],
+      "source_should_contain": ["MSFT"]
+    },
+    {
+      "id": "tesla_generic",
+      "query": "Tesla operational challenges or competition",
+      "must_contain": ["Tesla"],
+      "source_should_contain": ["TSLA"]
+    }
+  ]
+}

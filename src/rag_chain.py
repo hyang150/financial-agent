@@ -41,14 +41,16 @@ class AdvancedRAGChain:
         self.rag_config = rag_config or RAGConfig()
         self.vector_db_path = vector_db_path
 
-        print("📦 Loading embedding model...")
+        if self.rag_config.verbose:
+            print("📦 Loading embedding model...")
         self.embeddings = HuggingFaceEmbeddings(
             model_name=self.embedding_config.model_name,
             model_kwargs={'device': self.embedding_config.device},
             encode_kwargs={'normalize_embeddings': self.embedding_config.normalize_embeddings}
         )
 
-        print("📚 Loading vector database...")
+        if self.rag_config.verbose:
+            print("📚 Loading vector database...")
         if not os.path.exists(vector_db_path):
             raise ValueError(
                 f"Vector database not found at {vector_db_path}. "
@@ -63,7 +65,8 @@ class AdvancedRAGChain:
         self._init_retrievers()
 
         if self.rag_config.rerank_top_k > 0:
-            print("🔄 Loading reranker model...")
+            if self.rag_config.verbose:
+                print("🔄 Loading reranker model...")
             self._init_reranker()
         else:
             self.reranker_model = None
@@ -76,7 +79,8 @@ class AdvancedRAGChain:
         )
 
         if self.rag_config.use_hybrid_search:
-            print("🔍 Initializing hybrid search (Semantic + BM25)...")
+            if self.rag_config.verbose:
+                print("🔍 Initializing hybrid search (Semantic + BM25)...")
             all_docs = self.vectorstore.get()
             if all_docs and 'documents' in all_docs:
                 docs_for_bm25 = [
@@ -94,7 +98,8 @@ class AdvancedRAGChain:
                     weights=[self.rag_config.semantic_weight, self.rag_config.bm25_weight]
                 )
             else:
-                print("⚠️ No documents found for BM25, using semantic search only")
+                if self.rag_config.verbose:
+                    print("⚠️ No documents found for BM25, using semantic search only")
                 self.retriever = self.semantic_retriever
         else:
             self.retriever = self.semantic_retriever
@@ -168,15 +173,19 @@ class AdvancedRAGChain:
         返回:
             文档列表。
         """
-        print(f"🔍 Retrieving documents for: '{query}'")
+        if self.rag_config.verbose:
+            print(f"🔍 Retrieving documents for: '{query}'")
 
         documents = self.retriever.invoke(query)
-        print(f"📄 Retrieved {len(documents)} initial documents")
+        if self.rag_config.verbose:
+            print(f"📄 Retrieved {len(documents)} initial documents")
 
         if with_rerank and self.reranker_model:
-            print(f"🔄 Reranking to top {self.rag_config.rerank_top_k}...")
+            if self.rag_config.verbose:
+                print(f"🔄 Reranking to top {self.rag_config.rerank_top_k}...")
             documents = self._rerank_documents(query, documents)
-            print(f"✅ Reranked to {len(documents)} documents")
+            if self.rag_config.verbose:
+                print(f"✅ Reranked to {len(documents)} documents")
 
         return documents
 

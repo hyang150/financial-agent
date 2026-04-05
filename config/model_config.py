@@ -51,6 +51,9 @@ class RAGConfig:
     bm25_weight: float = 0.3
     semantic_weight: float = 0.7
 
+    # 为批量评估等场景关闭检索过程日志
+    verbose: bool = True
+
 @dataclass
 class AgentConfig:
     """Agent 迭代上限、超时、详细日志与是否允许危险代码等。"""
