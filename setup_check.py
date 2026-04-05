@@ -70,34 +70,38 @@ def check_env_file() -> Tuple[bool, str]:
         return False, ".env file not found (copy .env.example to .env)"
 
 
-def check_env_variables() -> List[Tuple[str, bool, str]]:
-    """校验 HF_TOKEN、TAVILY_API_KEY、SEC_EMAIL 等是否已配置（非占位）。"""
+def check_env_variables() -> List[Tuple[str, bool, str, bool]]:
+    """校验环境变量；每项为 (名称, 是否通过, 说明, 是否影响「全部通过」汇总)。
+
+    仅 HF_TOKEN、SEC_EMAIL 计入关键项；TAVILY 等为可选，避免描述里含 “Required” 被误当成必填。
+    """
     from dotenv import load_dotenv
     load_dotenv()
 
-    checks = []
+    checks: List[Tuple[str, bool, str, bool]] = []
 
-    # Required
     hf_token = os.getenv("HF_TOKEN")
     checks.append((
         "HF_TOKEN",
         bool(hf_token and not hf_token.startswith("hf_xxx")),
-        "Required for downloading models"
+        "Required for downloading models",
+        True,
     ))
 
-    # Optional but recommended
     tavily_key = os.getenv("TAVILY_API_KEY")
     checks.append((
         "TAVILY_API_KEY",
         bool(tavily_key and not tavily_key.startswith("tvly-xxx")),
-        "Optional: Required for web search"
+        "Optional: web search (Tavily)",
+        False,
     ))
 
     sec_email = os.getenv("SEC_EMAIL")
     checks.append((
         "SEC_EMAIL",
         bool(sec_email and "@" in sec_email and not sec_email.endswith("example.com")),
-        "Required for SEC EDGAR downloads"
+        "Required for SEC EDGAR downloads",
+        True,
     ))
 
     return checks
@@ -207,9 +211,9 @@ def main():
 
     if passed:
         env_checks = check_env_variables()
-        for var_name, var_passed, description in env_checks:
+        for var_name, var_passed, description, critical in env_checks:
             print_check(var_name, var_passed, description)
-            if "Required" in description:
+            if critical:
                 all_passed &= var_passed
 
     # Directories
