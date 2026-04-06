@@ -1,0 +1,59 @@
+{
+  "generated_at": "2026-04-06T07:05:00.456345+00:00",
+  "chunks": {
+    "vector_db_path": "/root/fin/financial-agent/data/vector_db",
+    "chunk_count": 8017,
+    "unique_source_paths": 24,
+    "char_length": {
+      "mean": 829.7810901833603,
+      "std": 290.6281778903557,
+      "min": 1.0,
+      "max": 1000.0,
+      "p50": 990.0,
+      "p90": 999.0,
+      "p99": 1000.0
+    },
+    "token_length_est": {
+      "mean": 207.44527254584008,
+      "p50": 247.5,
+      "p90": 249.75,
+      "p99": 250.0
+    },
+    "empty_chunk_ratio": 0.0,
+    "top_sources_by_chunk_count": [
+      {
+        "source": "data/sec_filings/sec-edgar-filings/MSFT/10-K/0001564590-21-039151/primary-document.html",
+        "chunks": 632
+      },
+      {
+        "source": "data/sec_filings/sec-edgar-filings/MSFT/10-K/0001564590-22-026876/primary-document.html",
+        "chunks": 618
+      },
+      {
+        "source": "data/sec_filings/sec-edgar-filings/MSFT/10-K/0000950170-24-087843/primary-document.html",
+        "chunks": 612
+      },
+      {
+        "source": "data/sec_filings/sec-edgar-filings/MSFT/10-K/0000950170-25-100235/primary-document.html",
+        "chunks": 596
+      },
+      {
+        "source": "data/sec_filings/sec-edgar-filings/MSFT/10-K/0000950170-23-035122/primary-document.html",
+        "chunks": 580
+      },
+      {
+        "source": "data/sec_filings/sec-edgar-filings/TSLA/10-K/0001628280-26-003952/primary-document.html",
+        "chunks": 500
+      },
+      {
+        "source": "data/sec_filings/sec-edgar-filings/TSLA/10-K/0001628280-25-003063/primary-document.html",
+        "chunks": 483
+      },
+      {
+        "source": "data/sec_filings/sec-edgar-filings/MSFT/10-Q/0000950170-25-061046/primary-document.html",
+        "chunks": 411
+      }
+    ]
+  },
+  "rag": null
+}

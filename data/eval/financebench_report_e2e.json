@@ -1,0 +1,51 @@
+{
+  "eval_type": "end_to_end",
+  "generated_at": "2026-04-06T06:25:13.309787+00:00",
+  "config": {
+    "model": "Qwen/Qwen2.5-7B-Instruct",
+    "device": "cuda",
+    "db_path": "data/vector_db",
+    "golden_path": "/root/fin/financial-agent/data/eval/financebench_golden.json"
+  },
+  "summary": {
+    "mean_token_f1": 0.0326,
+    "mean_exact_match": 0.5,
+    "mean_latency_sec": 7.491,
+    "total_queries": 2,
+    "successful_queries": 2
+  },
+  "per_question_type": {
+    "domain-relevant": {
+      "count": 1,
+      "mean_token_f1": 0.0652,
+      "mean_exact_match": 1.0
+    },
+    "metrics-generated": {
+      "count": 1,
+      "mean_token_f1": 0.0,
+      "mean_exact_match": 0.0
+    }
+  },
+  "per_query": [
+    {
+      "id": "fb_110",
+      "query": "What is the FY2016 COGS for Microsoft? Please state answer in USD millions. Provide a response to the question by primarily using the statement of income.",
+      "question_type": "metrics-generated",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "$32780.00",
+      "token_f1": 0.0,
+      "exact_match": 0.0,
+      "latency_sec": 5.206
+    },
+    {
+      "id": "fb_111",
+      "query": "Has Microsoft increased its debt on balance sheet between FY2023 and the FY2022 period?",
+      "question_type": "domain-relevant",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "No. Microsoft decreased its debt by $2.5bn in FY 2023 vs FY 2022.",
+      "token_f1": 0.0652,
+      "exact_match": 1.0,
+      "latency_sec": 9.775
+    }
+  ]
+}

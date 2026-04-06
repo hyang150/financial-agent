@@ -1,0 +1,236 @@
+{
+  "eval_type": "end_to_end",
+  "generated_at": "2026-04-06T07:12:07.022696+00:00",
+  "config": {
+    "model": "Qwen/Qwen2.5-7B-Instruct",
+    "device": "cuda",
+    "db_path": "data/vector_db",
+    "golden_path": "/root/fin/financial-agent/data/eval/financebench_golden.json"
+  },
+  "summary": {
+    "mean_token_f1": 0.0335,
+    "mean_exact_match": 0.45,
+    "mean_latency_sec": 13.493,
+    "total_queries": 20,
+    "successful_queries": 20
+  },
+  "per_question_type": {
+    "domain-relevant": {
+      "count": 7,
+      "mean_token_f1": 0.0664,
+      "mean_exact_match": 1.0
+    },
+    "metrics-generated": {
+      "count": 10,
+      "mean_token_f1": 0.0,
+      "mean_exact_match": 0.0
+    },
+    "novel-generated": {
+      "count": 3,
+      "mean_token_f1": 0.0686,
+      "mean_exact_match": 0.6667
+    }
+  },
+  "per_query": [
+    {
+      "id": "fb_000",
+      "query": "What is the FY2018 capital expenditure amount (in USD millions) for 3M? Give a response to the question by relying on the details shown in the cash flow statement.",
+      "question_type": "metrics-generated",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "$1577.00",
+      "token_f1": 0.0,
+      "exact_match": 0.0,
+      "latency_sec": 5.054
+    },
+    {
+      "id": "fb_001",
+      "query": "Assume that you are a public equities analyst. Answer the following question by primarily using information that is shown in the balance sheet: what is the year end FY2018 net PPNE for 3M? Answer in USD billions.",
+      "question_type": "metrics-generated",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "$8.70",
+      "token_f1": 0.0,
+      "exact_match": 0.0,
+      "latency_sec": 4.241
+    },
+    {
+      "id": "fb_002",
+      "query": "Is 3M a capital-intensive business based on FY2022 data?",
+      "question_type": "domain-relevant",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "No, the company is managing its CAPEX and Fixed Assets pretty efficiently, which is evident from below key metrics:\nCAPEX/Revenue Ratio: 5.1%\nFixed assets/Total Assets: 20%\nReturn on Assets= 12.4%",
+      "token_f1": 0.066,
+      "exact_match": 1.0,
+      "latency_sec": 47.296
+    },
+    {
+      "id": "fb_003",
+      "query": "What drove operating margin change as of FY2022 for 3M? If operating margin is not a useful metric for a company like this, then please state that and explain why.",
+      "question_type": "domain-relevant",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "Operating Margin for 3M in FY2022 has decreased by 1.7% primarily due to: \n-Decrease in gross Margin\n-mostly one-off charges including Combat Arms Earplugs litigation, impairment related to exiting PFAS manufacturing, costs related to exiting Russia and divestiture-related restructuring\ncharges",
+      "token_f1": 0.0772,
+      "exact_match": 1.0,
+      "latency_sec": 10.56
+    },
+    {
+      "id": "fb_004",
+      "query": "If we exclude the impact of M&A, which segment has dragged down 3M's overall growth in 2022?",
+      "question_type": "novel-generated",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "The consumer segment shrunk by 0.9% organically.",
+      "token_f1": 0.0203,
+      "exact_match": 0.0,
+      "latency_sec": 22.825
+    },
+    {
+      "id": "fb_005",
+      "query": "Does 3M have a reasonably healthy liquidity profile based on its quick ratio for Q2 of FY2023? If the quick ratio is not relevant to measure liquidity, please state that and explain why.",
+      "question_type": "domain-relevant",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "No. The quick ratio for 3M was 0.96 by Jun'23 close, which needs a bit of an improvement to touch the 1x mark",
+      "token_f1": 0.0882,
+      "exact_match": 1.0,
+      "latency_sec": 13.354
+    },
+    {
+      "id": "fb_006",
+      "query": "Which debt securities are registered to trade on a national securities exchange under 3M's name as of Q2 of 2023?",
+      "question_type": "domain-relevant",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "Following debt securities registered under 3M's name are listed to trade on the New York Stock Exchange:\n-1.500% Notes due 2026 (Trading Symbol: MMM26)\n-1.750% Notes due 2030 (Trading Symbol: MMM30)\n-1.500% Notes due 2031 (Trading Symbol: MMM31)",
+      "token_f1": 0.1048,
+      "exact_match": 1.0,
+      "latency_sec": 9.014
+    },
+    {
+      "id": "fb_007",
+      "query": "Does 3M maintain a stable trend of dividend distribution?",
+      "question_type": "novel-generated",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "Yes, not only they distribute the dividends on a routine basis, 3M has also been increasing the per share dividend for consecutive 65 years",
+      "token_f1": 0.1012,
+      "exact_match": 1.0,
+      "latency_sec": 11.74
+    },
+    {
+      "id": "fb_008",
+      "query": "What is the FY2019 fixed asset turnover ratio for Activision Blizzard? Fixed asset turnover ratio is defined as: FY2019 revenue / (average PP&E between FY2018 and FY2019). Round your answer to two decimal places. Base your judgments on the information provided primarily in the statement of income and the statement of financial position.",
+      "question_type": "metrics-generated",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "24.26",
+      "token_f1": 0.0,
+      "exact_match": 0.0,
+      "latency_sec": 11.574
+    },
+    {
+      "id": "fb_009",
+      "query": "What is the FY2017 - FY2019 3 year average of capex as a % of revenue for Activision Blizzard? Answer in units of percents and round to one decimal place. Calculate (or extract) the answer from the statement of income and the cash flow statement.",
+      "question_type": "metrics-generated",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "1.9%",
+      "token_f1": 0.0,
+      "exact_match": 0.0,
+      "latency_sec": 17.045
+    },
+    {
+      "id": "fb_010",
+      "query": "You are an investment banker and your only resource(s) to answer the following question is (are): the statement of financial position and the cash flow statement. Here's the question: what is the FY2015 operating cash flow ratio for Adobe? Operating cash flow ratio is defined as: cash from operations / total current liabilities. Round your answer to two decimal places.",
+      "question_type": "metrics-generated",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "0.66",
+      "token_f1": 0.0,
+      "exact_match": 0.0,
+      "latency_sec": 6.546
+    },
+    {
+      "id": "fb_011",
+      "query": "What is Adobe's year-over-year change in unadjusted operating income from FY2015 to FY2016 (in units of percents and round to one decimal place)? Give a solution to the question by using the income statement.",
+      "question_type": "metrics-generated",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "65.4%",
+      "token_f1": 0.0,
+      "exact_match": 0.0,
+      "latency_sec": 11.968
+    },
+    {
+      "id": "fb_012",
+      "query": "What is the FY2017 operating cash flow ratio for Adobe? Operating cash flow ratio is defined as: cash from operations / total current liabilities. Round your answer to two decimal places. Please utilize information provided primarily within the balance sheet and the cash flow statement.",
+      "question_type": "metrics-generated",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "0.83",
+      "token_f1": 0.0,
+      "exact_match": 0.0,
+      "latency_sec": 10.84
+    },
+    {
+      "id": "fb_013",
+      "query": "Does Adobe have an improving operating margin profile as of FY2022? If operating margin is not a useful metric for a company like this, then state that and explain why.",
+      "question_type": "domain-relevant",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "No the operating margins of Adobe have recently declined from 36.8% in FY 2021 to 34.6% in FY2022. A drop by 2.2% in a year.",
+      "token_f1": 0.0806,
+      "exact_match": 1.0,
+      "latency_sec": 13.281
+    },
+    {
+      "id": "fb_014",
+      "query": "Does Adobe have an improving Free cashflow conversion as of FY2022?",
+      "question_type": "novel-generated",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "Yes, the FCF conversion (using net income as the denominator) for Adobe has improved by ~13% from 143% in 2021 to 156% in 2022",
+      "token_f1": 0.0845,
+      "exact_match": 1.0,
+      "latency_sec": 21.139
+    },
+    {
+      "id": "fb_015",
+      "query": "What is the quantity of restructuring costs directly outlined in AES Corporation's income statements for FY2022? If restructuring costs are not explicitly outlined then state 0.",
+      "question_type": "domain-relevant",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "0",
+      "token_f1": 0.0,
+      "exact_match": 1.0,
+      "latency_sec": 6.003
+    },
+    {
+      "id": "fb_016",
+      "query": "Roughly how many times has AES Corporation sold its inventory in FY2022? Calculate inventory turnover ratio for the FY2022; if conventional inventory management is not meaningful for the company then state that and explain why.",
+      "question_type": "domain-relevant",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "AES has converted inventory 9.5 times in FY 2022.",
+      "token_f1": 0.0481,
+      "exact_match": 1.0,
+      "latency_sec": 7.242
+    },
+    {
+      "id": "fb_017",
+      "query": "Based on the information provided primarily in the statement of financial position and the statement of income, what is AES's FY2022 return on assets (ROA)? ROA is defined as: FY2022 net income / (average total assets between FY2021 and FY2022). Round your answer to two decimal places.",
+      "question_type": "metrics-generated",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "-0.02",
+      "token_f1": 0.0,
+      "exact_match": 0.0,
+      "latency_sec": 16.262
+    },
+    {
+      "id": "fb_018",
+      "query": "What is Amazon's FY2017 days payable outstanding (DPO)? DPO is defined as: 365 * (average accounts payable between FY2016 and FY2017) / (FY2017 COGS + change in inventory between FY2016 and FY2017). Round your answer to two decimal places. Address the question by using the line items and information shown within the balance sheet and the P&L statement.",
+      "question_type": "metrics-generated",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "93.86",
+      "token_f1": 0.0,
+      "exact_match": 0.0,
+      "latency_sec": 12.711
+    },
+    {
+      "id": "fb_019",
+      "query": "What is Amazon's year-over-year change in revenue from FY2016 to FY2017 (in units of percents and round to one decimal place)? Calculate what was asked by utilizing the line items clearly shown in the statement of income.",
+      "question_type": "metrics-generated",
+      "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
+      "reference_answer": "30.8%",
+      "token_f1": 0.0,
+      "exact_match": 0.0,
+      "latency_sec": 11.158
+    }
+  ]
+}

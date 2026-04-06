@@ -1,0 +1,58 @@
+{
+  "eval_type": "retrieval",
+  "generated_at": "2026-04-06T06:05:36.136323+00:00",
+  "config": {
+    "db_path": "data/vector_db",
+    "golden_path": "/root/fin/financial-agent/data/eval/financebench_golden.json",
+    "with_rerank": true
+  },
+  "summary": {
+    "mean_keyword_recall": 0.375,
+    "mean_source_match": 1.0,
+    "mean_evidence_overlap_f1": 0.0468,
+    "mean_rerank_score": -1.5665,
+    "mean_latency_sec": 0.322,
+    "p50_latency_sec": 0.322,
+    "p95_latency_sec": 0.529,
+    "total_queries": 2,
+    "successful_queries": 2
+  },
+  "per_question_type": {
+    "domain-relevant": {
+      "count": 1,
+      "mean_keyword_recall": 0.375,
+      "mean_source_match": 1.0,
+      "mean_evidence_overlap_f1": 0.041
+    },
+    "metrics-generated": {
+      "count": 1,
+      "mean_keyword_recall": 0.375,
+      "mean_source_match": 1.0,
+      "mean_evidence_overlap_f1": 0.0525
+    }
+  },
+  "per_query": [
+    {
+      "id": "fb_110",
+      "query": "What is the FY2016 COGS for Microsoft? Please state answer in USD millions. Provide a response to the question by primarily using the statement of income.",
+      "question_type": "metrics-generated",
+      "keyword_recall": 0.375,
+      "source_match": 1.0,
+      "evidence_overlap_f1": 0.0525,
+      "top_rerank_score": -3.0143,
+      "num_docs_retrieved": 3,
+      "latency_sec": 0.552
+    },
+    {
+      "id": "fb_111",
+      "query": "Has Microsoft increased its debt on balance sheet between FY2023 and the FY2022 period?",
+      "question_type": "domain-relevant",
+      "keyword_recall": 0.375,
+      "source_match": 1.0,
+      "evidence_overlap_f1": 0.041,
+      "top_rerank_score": -0.1187,
+      "num_docs_retrieved": 3,
+      "latency_sec": 0.092
+    }
+  ]
+}
