@@ -1,23 +1,23 @@
 {
   "eval_type": "end_to_end",
-  "generated_at": "2026-04-06T08:59:23.367834+00:00",
+  "generated_at": "2026-04-06T10:47:07.859229+00:00",
   "config": {
-    "model": "Qwen/Qwen2.5-14B-Instruct",
+    "model": "Qwen/Qwen3-8B",
     "device": "cuda",
     "db_path": "data/vector_db",
     "golden_path": "/root/fin/financial-agent/data/eval/financebench_golden.json"
   },
   "summary": {
-    "mean_token_f1": 0.0501,
-    "mean_exact_match": 0.4733,
-    "mean_latency_sec": 19.396,
+    "mean_token_f1": 0.0328,
+    "mean_exact_match": 0.4933,
+    "mean_latency_sec": 42.285,
     "total_queries": 150,
     "successful_queries": 150
   },
   "per_question_type": {
     "domain-relevant": {
       "count": 50,
-      "mean_token_f1": 0.0815,
+      "mean_token_f1": 0.0539,
       "mean_exact_match": 0.8
     },
     "metrics-generated": {
@@ -27,11 +27,11 @@
     },
     "novel-generated": {
       "count": 50,
-      "mean_token_f1": 0.0689,
-      "mean_exact_match": 0.58
+      "mean_token_f1": 0.0446,
+      "mean_exact_match": 0.64
     }
   },
-  "per_query": [    
+  "per_query": [
     {
       "id": "fb_000",
       "query": "What is the FY2018 capital expenditure amount (in USD millions) for 3M? Give a response to the question by relying on the details shown in the cash flow statement.",
@@ -40,7 +40,7 @@
       "reference_answer": "$1577.00",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 8.664
+      "latency_sec": 17.239
     },
     {
       "id": "fb_001",
@@ -50,7 +50,7 @@
       "reference_answer": "$8.70",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 11.226
+      "latency_sec": 16.759
     },
     {
       "id": "fb_002",
@@ -58,9 +58,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "No, the company is managing its CAPEX and Fixed Assets pretty efficiently, which is evident from below key metrics:\nCAPEX/Revenue Ratio: 5.1%\nFixed assets/Total Assets: 20%\nReturn on Assets= 12.4%",
-      "token_f1": 0.0632,
+      "token_f1": 0.0506,
       "exact_match": 1.0,
-      "latency_sec": 24.158
+      "latency_sec": 37.553
     },
     {
       "id": "fb_003",
@@ -68,9 +68,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Operating Margin for 3M in FY2022 has decreased by 1.7% primarily due to: \n-Decrease in gross Margin\n-mostly one-off charges including Combat Arms Earplugs litigation, impairment related to exiting PFAS manufacturing, costs related to exiting Russia and divestiture-related restructuring\ncharges",
-      "token_f1": 0.0854,
+      "token_f1": 0.0538,
       "exact_match": 1.0,
-      "latency_sec": 21.406
+      "latency_sec": 47.426
     },
     {
       "id": "fb_004",
@@ -78,9 +78,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "The consumer segment shrunk by 0.9% organically.",
-      "token_f1": 0.042,
+      "token_f1": 0.0207,
       "exact_match": 0.0,
-      "latency_sec": 4.242
+      "latency_sec": 41.825
     },
     {
       "id": "fb_005",
@@ -88,9 +88,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "No. The quick ratio for 3M was 0.96 by Jun'23 close, which needs a bit of an improvement to touch the 1x mark",
-      "token_f1": 0.0855,
+      "token_f1": 0.042,
       "exact_match": 1.0,
-      "latency_sec": 15.075
+      "latency_sec": 63.008
     },
     {
       "id": "fb_006",
@@ -98,9 +98,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Following debt securities registered under 3M's name are listed to trade on the New York Stock Exchange:\n-1.500% Notes due 2026 (Trading Symbol: MMM26)\n-1.750% Notes due 2030 (Trading Symbol: MMM30)\n-1.500% Notes due 2031 (Trading Symbol: MMM31)",
-      "token_f1": 0.0945,
+      "token_f1": 0.078,
       "exact_match": 1.0,
-      "latency_sec": 77.772
+      "latency_sec": 48.088
     },
     {
       "id": "fb_007",
@@ -108,9 +108,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes, not only they distribute the dividends on a routine basis, 3M has also been increasing the per share dividend for consecutive 65 years",
-      "token_f1": 0.0786,
+      "token_f1": 0.066,
       "exact_match": 1.0,
-      "latency_sec": 14.058
+      "latency_sec": 37.584
     },
     {
       "id": "fb_008",
@@ -120,7 +120,7 @@
       "reference_answer": "24.26",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 24.015
+      "latency_sec": 60.005
     },
     {
       "id": "fb_009",
@@ -130,7 +130,7 @@
       "reference_answer": "1.9%",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 29.673
+      "latency_sec": 30.879
     },
     {
       "id": "fb_010",
@@ -140,7 +140,7 @@
       "reference_answer": "0.66",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 17.445
+      "latency_sec": 44.205
     },
     {
       "id": "fb_011",
@@ -150,7 +150,7 @@
       "reference_answer": "65.4%",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 25.851
+      "latency_sec": 51.422
     },
     {
       "id": "fb_012",
@@ -160,7 +160,7 @@
       "reference_answer": "0.83",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 16.93
+      "latency_sec": 27.632
     },
     {
       "id": "fb_013",
@@ -168,9 +168,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "No the operating margins of Adobe have recently declined from 36.8% in FY 2021 to 34.6% in FY2022. A drop by 2.2% in a year.",
-      "token_f1": 0.1067,
+      "token_f1": 0.06,
       "exact_match": 1.0,
-      "latency_sec": 14.84
+      "latency_sec": 46.978
     },
     {
       "id": "fb_014",
@@ -178,9 +178,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes, the FCF conversion (using net income as the denominator) for Adobe has improved by ~13% from 143% in 2021 to 156% in 2022",
-      "token_f1": 0.11,
+      "token_f1": 0.0708,
       "exact_match": 1.0,
-      "latency_sec": 13.237
+      "latency_sec": 36.079
     },
     {
       "id": "fb_015",
@@ -190,7 +190,7 @@
       "reference_answer": "0",
       "token_f1": 0.0,
       "exact_match": 1.0,
-      "latency_sec": 6.543
+      "latency_sec": 23.235
     },
     {
       "id": "fb_016",
@@ -198,9 +198,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "AES has converted inventory 9.5 times in FY 2022.",
-      "token_f1": 0.0407,
+      "token_f1": 0.0246,
       "exact_match": 1.0,
-      "latency_sec": 25.071
+      "latency_sec": 38.366
     },
     {
       "id": "fb_017",
@@ -209,8 +209,8 @@
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "-0.02",
       "token_f1": 0.0,
-      "exact_match": 1.0,
-      "latency_sec": 30.488
+      "exact_match": 0.0,
+      "latency_sec": 37.654
     },
     {
       "id": "fb_018",
@@ -220,7 +220,7 @@
       "reference_answer": "93.86",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 32.092
+      "latency_sec": 72.628
     },
     {
       "id": "fb_019",
@@ -229,8 +229,8 @@
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "30.8%",
       "token_f1": 0.0,
-      "exact_match": 1.0,
-      "latency_sec": 22.768
+      "exact_match": 0.0,
+      "latency_sec": 22.331
     },
     {
       "id": "fb_020",
@@ -240,7 +240,7 @@
       "reference_answer": "$11588.00",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 16.598
+      "latency_sec": 43.741
     },
     {
       "id": "fb_021",
@@ -250,7 +250,7 @@
       "reference_answer": "$1616.00",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 12.248
+      "latency_sec": 34.425
     },
     {
       "id": "fb_022",
@@ -258,9 +258,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Amcor Finance (USA), Inc. and Amcor Flexibles North America, Inc., entered into supplemental indentures relating to Guaranteed Senior Notes due 2026 and 2028. This involved the substitution of the Substitute Issuer (Amcor Flexibles North America) for the Former Issuer (Amcor Finance) and the assumption of covenants under the indentures. (In essence a novation agreement)",
-      "token_f1": 0.0737,
+      "token_f1": 0.0489,
       "exact_match": 1.0,
-      "latency_sec": 9.787
+      "latency_sec": 30.35
     },
     {
       "id": "fb_023",
@@ -268,9 +268,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "The quick ratio has slightly improved from 0.67 times to 0.69 times between FY 2023 and FY 2022.(3.4% jump)",
-      "token_f1": 0.0625,
+      "token_f1": 0.0449,
       "exact_match": 1.0,
-      "latency_sec": 55.99
+      "latency_sec": 56.721
     },
     {
       "id": "fb_024",
@@ -278,9 +278,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Amcor completed these acquisitions during FY2023:\n-100% equity interest of a flexibles manufacturing company in the Czech Republic\n- 100% equity interest in a medical device packaging manufacturing site in\nShanghai, China.\n-acquisition of a New Zealand-based leading manufacturer of state-of-the-art, automated protein\npackaging machines.",
-      "token_f1": 0.0956,
+      "token_f1": 0.0503,
       "exact_match": 1.0,
-      "latency_sec": 20.177
+      "latency_sec": 61.734
     },
     {
       "id": "fb_025",
@@ -288,9 +288,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Amcor is a global leader in packaging production for various use cases.",
-      "token_f1": 0.0946,
+      "token_f1": 0.072,
       "exact_match": 0.0,
-      "latency_sec": 4.012
+      "latency_sec": 13.351
     },
     {
       "id": "fb_026",
@@ -298,9 +298,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "No. For AMCOR there has been a slight decline in gross margins by 0.8%.",
-      "token_f1": 0.0583,
+      "token_f1": 0.0455,
       "exact_match": 0.0,
-      "latency_sec": 17.426
+      "latency_sec": 26.167
     },
     {
       "id": "fb_027",
@@ -308,9 +308,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "87% of the total restructuring liability is related Employee liabilities.",
-      "token_f1": 0.0606,
+      "token_f1": 0.0305,
       "exact_match": 0.0,
-      "latency_sec": 10.854
+      "latency_sec": 33.527
     },
     {
       "id": "fb_028",
@@ -318,9 +318,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "AMCOR's Adj. EBITDA was $2,018mn in FY 2023",
-      "token_f1": 0.068,
+      "token_f1": 0.0305,
       "exact_match": 1.0,
-      "latency_sec": 7.066
+      "latency_sec": 49.146
     },
     {
       "id": "fb_029",
@@ -328,9 +328,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "The Real Growth was flat in FY 2023 vs FY 2022.",
-      "token_f1": 0.0645,
+      "token_f1": 0.0373,
       "exact_match": 1.0,
-      "latency_sec": 23.872
+      "latency_sec": 73.233
     },
     {
       "id": "fb_030",
@@ -340,7 +340,7 @@
       "reference_answer": "4.2%",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 15.322
+      "latency_sec": 58.823
     },
     {
       "id": "fb_031",
@@ -348,9 +348,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes. The quick ratio is 1.57, calculated as (cash and cash equivalents+Short term investments+Accounts receivable, net+receivables from related parties)/ (current liabilities).",
-      "token_f1": 0.0511,
+      "token_f1": 0.0439,
       "exact_match": 1.0,
-      "latency_sec": 30.175
+      "latency_sec": 41.247
     },
     {
       "id": "fb_032",
@@ -358,9 +358,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "AMD sells server microprocessors (CPUs) and graphics processing units (GPUs), data processing units (DPUs), Field Programmable Gate Arrays (FPGAs), and Adaptive System-on-Chip (SoC) products for data centers; CPUs, accelerated processing units (APUs) that integrate CPUs and GPUs, and chipsets for desktop and notebook personal computers; discrete GPUs, and semi-custom SoC products and development services; and embedded CPUs, GPUs, APUs, FPGAs, and Adaptive SoC products.",
-      "token_f1": 0.1171,
+      "token_f1": 0.0649,
       "exact_match": 1.0,
-      "latency_sec": 9.856
+      "latency_sec": 42.92
     },
     {
       "id": "fb_033",
@@ -368,9 +368,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "In 2022, AMD reported Higher sales of their EPYC server processors, higher semi-custom product sales, and the inclusion of Xilinx embedded product sales",
-      "token_f1": 0.1121,
+      "token_f1": 0.048,
       "exact_match": 1.0,
-      "latency_sec": 11.805
+      "latency_sec": 56.066
     },
     {
       "id": "fb_034",
@@ -378,9 +378,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "The decrease in AMD's operating income was primarily driven by amortization of intangible assets associated with the Xilinx acquisition",
-      "token_f1": 0.0719,
+      "token_f1": 0.039,
       "exact_match": 0.0,
-      "latency_sec": 32.014
+      "latency_sec": 48.76
     },
     {
       "id": "fb_035",
@@ -388,9 +388,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "In 2022, AMD brought in the most cashflow from Operations",
-      "token_f1": 0.0707,
-      "exact_match": 1.0,
-      "latency_sec": 9.355
+      "token_f1": 0.0413,
+      "exact_match": 0.0,
+      "latency_sec": 30.97
     },
     {
       "id": "fb_036",
@@ -398,9 +398,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Data Center",
-      "token_f1": 0.0068,
-      "exact_match": 0.0,
-      "latency_sec": 39.874
+      "token_f1": 0.0063,
+      "exact_match": 1.0,
+      "latency_sec": 35.49
     },
     {
       "id": "fb_037",
@@ -408,9 +408,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes, one customer accounted for 16% of consolidated net revenue",
-      "token_f1": 0.0702,
+      "token_f1": 0.0383,
       "exact_match": 1.0,
-      "latency_sec": 6.724
+      "latency_sec": 35.485
     },
     {
       "id": "fb_038",
@@ -418,9 +418,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "There are none",
-      "token_f1": 0.0121,
+      "token_f1": 0.0099,
       "exact_match": 0.0,
-      "latency_sec": 6.983
+      "latency_sec": 53.208
     },
     {
       "id": "fb_039",
@@ -428,9 +428,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "United States, EMEA, APAC, and LACC",
-      "token_f1": 0.0181,
+      "token_f1": 0.0121,
       "exact_match": 1.0,
-      "latency_sec": 11.076
+      "latency_sec": 26.995
     },
     {
       "id": "fb_040",
@@ -438,9 +438,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Performance is not measured through operating margin",
-      "token_f1": 0.0332,
+      "token_f1": 0.0188,
       "exact_match": 0.0,
-      "latency_sec": 19.527
+      "latency_sec": 53.011
     },
     {
       "id": "fb_041",
@@ -448,9 +448,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Performance is not measured through gross margin",
-      "token_f1": 0.0314,
+      "token_f1": 0.0274,
       "exact_match": 0.0,
-      "latency_sec": 20.672
+      "latency_sec": 40.925
     },
     {
       "id": "fb_042",
@@ -458,9 +458,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "The effective tax rate for American Express has changed/dropped from 24.6% in FY 2021 to 21.6% in FY 2022.",
-      "token_f1": 0.1152,
+      "token_f1": 0.0716,
       "exact_match": 1.0,
-      "latency_sec": 12.811
+      "latency_sec": 38.695
     },
     {
       "id": "fb_043",
@@ -470,7 +470,7 @@
       "reference_answer": "Customer deposits",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 8.975
+      "latency_sec": 26.285
     },
     {
       "id": "fb_044",
@@ -480,7 +480,7 @@
       "reference_answer": "Yes",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 57.764
+      "latency_sec": 27.341
     },
     {
       "id": "fb_045",
@@ -490,7 +490,7 @@
       "reference_answer": "$0.40",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 8.305
+      "latency_sec": 41.174
     },
     {
       "id": "fb_046",
@@ -500,7 +500,7 @@
       "reference_answer": "$1832.00",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 18.303
+      "latency_sec": 67.441
     },
     {
       "id": "fb_047",
@@ -508,9 +508,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "No, American Water Works had negative working capital of -$1561M in FY 2022.",
-      "token_f1": 0.078,
+      "token_f1": 0.036,
       "exact_match": 1.0,
-      "latency_sec": 12.504
+      "latency_sec": 45.426
     },
     {
       "id": "fb_048",
@@ -519,8 +519,8 @@
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "2.8%",
       "token_f1": 0.0,
-      "exact_match": 0.0,
-      "latency_sec": 33.481
+      "exact_match": 1.0,
+      "latency_sec": 47.916
     },
     {
       "id": "fb_049",
@@ -530,7 +530,7 @@
       "reference_answer": "$5409.00",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 9.6
+      "latency_sec": 37.075
     },
     {
       "id": "fb_050",
@@ -538,9 +538,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes, the margins have been consistent, there has been a minor decline of 1.1% in gross margins between FY2022 and FY2023.",
-      "token_f1": 0.0814,
+      "token_f1": 0.061,
       "exact_match": 1.0,
-      "latency_sec": 24.178
+      "latency_sec": 41.54
     },
     {
       "id": "fb_051",
@@ -548,9 +548,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Best Buy closed two acquisitions, both these companies were already partially owned by Best Buy, but Best Buy acquired all outstanding shares of these two companies during FY 2022: (1) Current Health Ltd and (2) Two Peaks, LLC d/b/a Yardbird Furniture",
-      "token_f1": 0.0755,
+      "token_f1": 0.0688,
       "exact_match": 1.0,
-      "latency_sec": 17.65
+      "latency_sec": 36.565
     },
     {
       "id": "fb_052",
@@ -558,9 +558,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Best Buy generated the most cash flow from operating activities in FY 2023 ($1.8 bn)",
-      "token_f1": 0.1098,
+      "token_f1": 0.0492,
       "exact_match": 1.0,
-      "latency_sec": 77.921
+      "latency_sec": 35.022
     },
     {
       "id": "fb_053",
@@ -568,9 +568,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes, there was a decline of ~42% between FY2023 and Q2 of FY 2024.",
-      "token_f1": 0.0885,
+      "token_f1": 0.0641,
       "exact_match": 1.0,
-      "latency_sec": 25.867
+      "latency_sec": 25.579
     },
     {
       "id": "fb_054",
@@ -578,9 +578,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes, there is decline in number stores by 1.32% from 982 stores in Q2 FY 2023 to 969 by the end of Q2 FY2024.",
-      "token_f1": 0.1256,
+      "token_f1": 0.0826,
       "exact_match": 1.0,
-      "latency_sec": 13.409
+      "latency_sec": 60.574
     },
     {
       "id": "fb_055",
@@ -588,9 +588,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "The entertainment segment experienced the highest growth of 9% during Q2 FY2024, primarily from gaming division.",
-      "token_f1": 0.0687,
+      "token_f1": 0.0446,
       "exact_match": 1.0,
-      "latency_sec": 14.575
+      "latency_sec": 46.208
     },
     {
       "id": "fb_056",
@@ -600,7 +600,7 @@
       "reference_answer": "1.73",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 14.603
+      "latency_sec": 25.683
     },
     {
       "id": "fb_057",
@@ -610,7 +610,7 @@
       "reference_answer": "101.5%",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 21.167
+      "latency_sec": 45.343
     },
     {
       "id": "fb_058",
@@ -620,7 +620,7 @@
       "reference_answer": "$382.00",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 7.353
+      "latency_sec": 49.712
     },
     {
       "id": "fb_059",
@@ -630,7 +630,7 @@
       "reference_answer": "$12645.00",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 8.096
+      "latency_sec": 37.639
     },
     {
       "id": "fb_060",
@@ -638,9 +638,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes. Boeing has product and service categories that represent more than 20% of Boeing's revenue for FY2022. These categories are Commercial Airplanes which comprises 39% of total revenue, Defence which comprises 35% of total revenue and Services which comprises 26% of total revenue.",
-      "token_f1": 0.1594,
+      "token_f1": 0.1244,
       "exact_match": 1.0,
-      "latency_sec": 24.093
+      "latency_sec": 46.343
     },
     {
       "id": "fb_061",
@@ -648,9 +648,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes. Multiple lawsuits have been filed against Boeing resulting from a 2018 Lion Air crash and a 2019 Ethiopian Airlines crash.",
-      "token_f1": 0.0524,
-      "exact_match": 0.0,
-      "latency_sec": 11.948
+      "token_f1": 0.0583,
+      "exact_match": 1.0,
+      "latency_sec": 38.965
     },
     {
       "id": "fb_062",
@@ -658,9 +658,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes. Boeing has an improving gross margin profile as of FY2022. Gross profit improved from $3,017 million in FY2021 to $3,502 million in FY2022. Gross margin % improved from 4.8% in FY2021 to 5.3% in FY2022.",
-      "token_f1": 0.112,
+      "token_f1": 0.0747,
       "exact_match": 1.0,
-      "latency_sec": 23.524
+      "latency_sec": 47.322
     },
     {
       "id": "fb_063",
@@ -668,9 +668,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Boeing's primary customers as of FY2022 are a limited number of commercial airlines and the US government. The US government accounted for 40% of Boeing's total revenues in FY2022.",
-      "token_f1": 0.1111,
+      "token_f1": 0.0796,
       "exact_match": 1.0,
-      "latency_sec": 9.717
+      "latency_sec": 42.843
     },
     {
       "id": "fb_064",
@@ -678,9 +678,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes, Boeing's business is subject to cyclicality due to its exposure to the airline industry which is a cyclical industry.",
-      "token_f1": 0.0836,
+      "token_f1": 0.0667,
       "exact_match": 1.0,
-      "latency_sec": 15.837
+      "latency_sec": 40.708
     },
     {
       "id": "fb_065",
@@ -688,9 +688,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Boeing forecasts an increase in the production rates for the 737, 777X and 787 aircrafts in 2023.",
-      "token_f1": 0.066,
+      "token_f1": 0.053,
       "exact_match": 1.0,
-      "latency_sec": 29.882
+      "latency_sec": 42.669
     },
     {
       "id": "fb_066",
@@ -698,9 +698,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Effective tax rate in FY2022 was 0.62%, compared to  -14.76% in FY2021.",
-      "token_f1": 0.0727,
+      "token_f1": 0.0452,
       "exact_match": 1.0,
-      "latency_sec": 11.71
+      "latency_sec": 33.336
     },
     {
       "id": "fb_067",
@@ -710,7 +710,7 @@
       "reference_answer": "0.01",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 8.9
+      "latency_sec": 54.461
     },
     {
       "id": "fb_068",
@@ -720,7 +720,7 @@
       "reference_answer": "39.7%",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 15.788
+      "latency_sec": 24.271
     },
     {
       "id": "fb_069",
@@ -730,7 +730,7 @@
       "reference_answer": "0.8",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 9.972
+      "latency_sec": 36.388
     },
     {
       "id": "fb_070",
@@ -740,7 +740,7 @@
       "reference_answer": "63.86",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 35.036
+      "latency_sec": 40.981
     },
     {
       "id": "fb_071",
@@ -750,7 +750,7 @@
       "reference_answer": "10.3%",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 32.314
+      "latency_sec": 58.995
     },
     {
       "id": "fb_072",
@@ -758,9 +758,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "The effective tax rate of Corning has changed from 20% in FY2021 to 23% in FY 2022.",
-      "token_f1": 0.1224,
+      "token_f1": 0.07,
       "exact_match": 1.0,
-      "latency_sec": 15.065
+      "latency_sec": 44.947
     },
     {
       "id": "fb_073",
@@ -768,9 +768,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes. Corning had a positive working capital amount of $831 million by FY 2022 close. This answer considers only operating current assets and current liabilities that were clearly shown in the balance sheet.",
-      "token_f1": 0.1827,
+      "token_f1": 0.0945,
       "exact_match": 1.0,
-      "latency_sec": 10.836
+      "latency_sec": 32.189
     },
     {
       "id": "fb_074",
@@ -780,7 +780,7 @@
       "reference_answer": "$59268.00",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 6.929
+      "latency_sec": 22.931
     },
     {
       "id": "fb_075",
@@ -790,7 +790,7 @@
       "reference_answer": "17.98",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 23.529
+      "latency_sec": 44.168
     },
     {
       "id": "fb_076",
@@ -798,9 +798,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes, CVS Health requires an extensive asset base to operate, which is evident from its ROA of only 1.82% in 2022 and 3.39% in 2021, though it should be noted that a significant portion of this asset base is goodwill, and CVS's fixed assets/total assets ratio is on the lower side of 5.6%.",
-      "token_f1": 0.1392,
+      "token_f1": 0.1239,
       "exact_match": 1.0,
-      "latency_sec": 14.502
+      "latency_sec": 37.93
     },
     {
       "id": "fb_077",
@@ -808,9 +808,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes, CVS Health has been involved in multiple ongoing legal battles. Some notable legal dispute areas for CVS are: (1) usual and customary pricing litigation: where it's claimed that CVSâs retail pharmacies overcharged for prescription drugs; (2) PBM litigation and investigations: where it's claimed that that rebate agreements between the drug manufacturers and PBMs caused inflated prices for certain drug products; and (3) controlled substances litigation: legal matters around opioids for whic",
-      "token_f1": 0.1201,
+      "token_f1": 0.1002,
       "exact_match": 1.0,
-      "latency_sec": 12.379
+      "latency_sec": 54.641
     },
     {
       "id": "fb_078",
@@ -818,9 +818,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes, CVS paid a $ 0.55 dividend per share every quarter in FY2022",
-      "token_f1": 0.1034,
+      "token_f1": 0.0423,
       "exact_match": 1.0,
-      "latency_sec": 8.435
+      "latency_sec": 72.82
     },
     {
       "id": "fb_079",
@@ -828,9 +828,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes. She was previous CEO of Ulta Beauty which means she had to manage a large retail company that has brick and mortar + online business. So yes she was a CEO in a similar company to Foot Locker before this.",
-      "token_f1": 0.1593,
+      "token_f1": 0.1241,
       "exact_match": 0.0,
-      "latency_sec": 8.115
+      "latency_sec": 18.77
     },
     {
       "id": "fb_080",
@@ -838,9 +838,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes, his name is Richard A. Johnson",
-      "token_f1": 0.0085,
+      "token_f1": 0.007,
       "exact_match": 1.0,
-      "latency_sec": 19.787
+      "latency_sec": 23.382
     },
     {
       "id": "fb_081",
@@ -850,7 +850,7 @@
       "reference_answer": "-3.7",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 38.401
+      "latency_sec": 65.806
     },
     {
       "id": "fb_082",
@@ -860,7 +860,7 @@
       "reference_answer": "0.68",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 13.869
+      "latency_sec": 31.456
     },
     {
       "id": "fb_083",
@@ -870,7 +870,7 @@
       "reference_answer": "$3215.00",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 14.672
+      "latency_sec": 32.697
     },
     {
       "id": "fb_084",
@@ -880,7 +880,7 @@
       "reference_answer": "0.54",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 16.976
+      "latency_sec": 31.852
     },
     {
       "id": "fb_085",
@@ -888,9 +888,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "No, JnJ's FY2022 financials are not of a high growth company as sales grew by 1.3% in FY2022.",
-      "token_f1": 0.0949,
+      "token_f1": 0.063,
       "exact_match": 1.0,
-      "latency_sec": 25.093
+      "latency_sec": 51.736
     },
     {
       "id": "fb_086",
@@ -898,9 +898,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "For FY22, JnJ had changes in gross margin due to: One-time COVID-19 vaccine manufacturing exit related costs, Currency impacts in the Pharmaceutical segment, Commodity inflation in the MedTech and Consumer Health segments, partially offset by Supply chain benefits in the Consumer Health segment.",
-      "token_f1": 0.0901,
+      "token_f1": 0.0837,
       "exact_match": 1.0,
-      "latency_sec": 26.545
+      "latency_sec": 41.252
     },
     {
       "id": "fb_087",
@@ -908,9 +908,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "JnJ sold its inventory 2.7 times in FY2022.",
-      "token_f1": 0.0433,
+      "token_f1": 0.0321,
       "exact_match": 1.0,
-      "latency_sec": 30.995
+      "latency_sec": 47.439
     },
     {
       "id": "fb_088",
@@ -918,9 +918,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "No, rate of growth in adjusted EPS is expected to decelerate slightly from 3.6% in FY2022 to 3.5% in FY2023.",
-      "token_f1": 0.1126,
+      "token_f1": 0.0548,
       "exact_match": 1.0,
-      "latency_sec": 13.093
+      "latency_sec": 43.356
     },
     {
       "id": "fb_089",
@@ -928,9 +928,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "US sales increased 3.0% vs international sales decline of 0.6%.",
-      "token_f1": 0.0541,
-      "exact_match": 0.0,
-      "latency_sec": 8.777
+      "token_f1": 0.0214,
+      "exact_match": 1.0,
+      "latency_sec": 42.848
     },
     {
       "id": "fb_090",
@@ -938,9 +938,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "The Consumer Health business segment will be treated as a discontinued operation from August 30, 2023 onward.",
-      "token_f1": 0.1683,
+      "token_f1": 0.0838,
       "exact_match": 1.0,
-      "latency_sec": 9.201
+      "latency_sec": 37.743
     },
     {
       "id": "fb_091",
@@ -948,9 +948,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "JnJ will make a gain of approximately $20 billion from the separation of its Consumer Health business segment.",
-      "token_f1": 0.0916,
+      "token_f1": 0.0546,
       "exact_match": 0.0,
-      "latency_sec": 22.144
+      "latency_sec": 50.133
     },
     {
       "id": "fb_092",
@@ -958,9 +958,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "JnJ realised $13.2 billion in cash proceeds from the separation of Kenvue.",
-      "token_f1": 0.0935,
+      "token_f1": 0.0778,
       "exact_match": 0.0,
-      "latency_sec": 14.666
+      "latency_sec": 75.355
     },
     {
       "id": "fb_093",
@@ -968,9 +968,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes, net earnings as a percent of sales increased from 20% in Q2 of FY2022 to 20.1% in Q2 of FY2023.",
-      "token_f1": 0.0909,
+      "token_f1": 0.087,
       "exact_match": 1.0,
-      "latency_sec": 65.213
+      "latency_sec": 58.014
     },
     {
       "id": "fb_094",
@@ -978,9 +978,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Corporate. Its net revenue was -$473 million.",
-      "token_f1": 0.0261,
+      "token_f1": 0.0135,
       "exact_match": 0.0,
-      "latency_sec": 16.719
+      "latency_sec": 28.768
     },
     {
       "id": "fb_095",
@@ -988,9 +988,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "They could receive $66.56 per share.",
-      "token_f1": 0.027,
+      "token_f1": 0.0213,
       "exact_match": 0.0,
-      "latency_sec": 33.842
+      "latency_sec": 57.903
     },
     {
       "id": "fb_096",
@@ -998,9 +998,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Since JPM is a financial institution, gross margin is not a relevant metric.",
-      "token_f1": 0.0674,
+      "token_f1": 0.0387,
       "exact_match": 1.0,
-      "latency_sec": 15.463
+      "latency_sec": 37.776
     },
     {
       "id": "fb_097",
@@ -1008,9 +1008,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Corporate & Investment Bank. Its net income was $3725 million.",
-      "token_f1": 0.0833,
+      "token_f1": 0.0352,
       "exact_match": 0.0,
-      "latency_sec": 9.072
+      "latency_sec": 38.314
     },
     {
       "id": "fb_098",
@@ -1018,9 +1018,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes. It decreased.",
-      "token_f1": 0.0081,
+      "token_f1": 0.0106,
       "exact_match": 0.0,
-      "latency_sec": 26.185
+      "latency_sec": 47.131
     },
     {
       "id": "fb_099",
@@ -1030,7 +1030,7 @@
       "reference_answer": "6.25",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 25.293
+      "latency_sec": 40.996
     },
     {
       "id": "fb_100",
@@ -1040,7 +1040,7 @@
       "reference_answer": "1.33",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 24.948
+      "latency_sec": 34.677
     },
     {
       "id": "fb_101",
@@ -1050,7 +1050,7 @@
       "reference_answer": "$5818.00",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 10.317
+      "latency_sec": 34.244
     },
     {
       "id": "fb_102",
@@ -1060,7 +1060,7 @@
       "reference_answer": "0.4%",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 17.303
+      "latency_sec": 59.773
     },
     {
       "id": "fb_103",
@@ -1070,7 +1070,7 @@
       "reference_answer": "$303.00",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 5.644
+      "latency_sec": 29.003
     },
     {
       "id": "fb_104",
@@ -1080,7 +1080,7 @@
       "reference_answer": "7.9%",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 41.2
+      "latency_sec": 37.541
     },
     {
       "id": "fb_105",
@@ -1088,9 +1088,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes. MGM maintained 0.01$ per share annual dividend through out FY 2022.",
-      "token_f1": 0.0387,
+      "token_f1": 0.0223,
       "exact_match": 1.0,
-      "latency_sec": 5.569
+      "latency_sec": 39.107
     },
     {
       "id": "fb_106",
@@ -1098,9 +1098,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Las Vegas resorts contributed ~90% of company level EBITDAR during FY2022.",
-      "token_f1": 0.0508,
+      "token_f1": 0.049,
       "exact_match": 1.0,
-      "latency_sec": 14.066
+      "latency_sec": 38.844
     },
     {
       "id": "fb_107",
@@ -1108,9 +1108,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "As adjusted EBIT is negative, coverage ratio is zero",
-      "token_f1": 0.0615,
+      "token_f1": 0.037,
       "exact_match": 1.0,
-      "latency_sec": 14.869
+      "latency_sec": 33.455
     },
     {
       "id": "fb_108",
@@ -1118,9 +1118,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "MGM China experienced the worst topline performance amongst the other regions presented. Its revenue declined 44% in FY2022 whereas the other regions presented increased their revenues.",
-      "token_f1": 0.1202,
+      "token_f1": 0.0694,
       "exact_match": 1.0,
-      "latency_sec": 7.233
+      "latency_sec": 30.209
     },
     {
       "id": "fb_109",
@@ -1128,9 +1128,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "the biggest short term investment is in corporate bonds (almost 82% of the total investment)",
-      "token_f1": 0.0687,
+      "token_f1": 0.0417,
       "exact_match": 0.0,
-      "latency_sec": 17.456
+      "latency_sec": 49.557
     },
     {
       "id": "fb_110",
@@ -1140,7 +1140,7 @@
       "reference_answer": "$32780.00",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 11.31
+      "latency_sec": 24.326
     },
     {
       "id": "fb_111",
@@ -1148,9 +1148,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "No. Microsoft decreased its debt by $2.5bn in FY 2023 vs FY 2022.",
-      "token_f1": 0.0764,
+      "token_f1": 0.0493,
       "exact_match": 1.0,
-      "latency_sec": 7.892
+      "latency_sec": 31.084
     },
     {
       "id": "fb_112",
@@ -1160,7 +1160,7 @@
       "reference_answer": "5.4%",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 38.903
+      "latency_sec": 75.094
     },
     {
       "id": "fb_113",
@@ -1170,7 +1170,7 @@
       "reference_answer": "$5466.00",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 4.733
+      "latency_sec": 20.54
     },
     {
       "id": "fb_114",
@@ -1180,7 +1180,7 @@
       "reference_answer": "55.1%",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 34.454
+      "latency_sec": 28.926
     },
     {
       "id": "fb_115",
@@ -1190,7 +1190,7 @@
       "reference_answer": "$16525.00",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 6.105
+      "latency_sec": 30.36
     },
     {
       "id": "fb_116",
@@ -1200,7 +1200,7 @@
       "reference_answer": "3.46",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 23.498
+      "latency_sec": 32.968
     },
     {
       "id": "fb_117",
@@ -1208,9 +1208,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Among the three, cash flow from operations was the highest for Nike in FY2023.",
-      "token_f1": 0.0918,
+      "token_f1": 0.0712,
       "exact_match": 1.0,
-      "latency_sec": 12.143
+      "latency_sec": 31.148
     },
     {
       "id": "fb_118",
@@ -1218,9 +1218,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes. Paypal has a positive working capital of $ 1.6Bn as of FY2022 end.",
-      "token_f1": 0.0623,
+      "token_f1": 0.0515,
       "exact_match": 1.0,
-      "latency_sec": 33.614
+      "latency_sec": 36.317
     },
     {
       "id": "fb_119",
@@ -1230,7 +1230,7 @@
       "reference_answer": "$4.60",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 11.565
+      "latency_sec": 67.611
     },
     {
       "id": "fb_120",
@@ -1238,9 +1238,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "As of FY2022, Pepsico primarily operates in the following geographies: North America, Latin America, Europe, Africa, Middle East, South Asia, Asia Pacific, Australia, New Zealand and China.",
-      "token_f1": 0.1373,
+      "token_f1": 0.0757,
       "exact_match": 1.0,
-      "latency_sec": 8.522
+      "latency_sec": 40.938
     },
     {
       "id": "fb_121",
@@ -1248,9 +1248,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "No, Pepsico is not involved in material legal battles.",
-      "token_f1": 0.0531,
+      "token_f1": 0.0369,
       "exact_match": 1.0,
-      "latency_sec": 11.59
+      "latency_sec": 51.723
     },
     {
       "id": "fb_122",
@@ -1258,9 +1258,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Pepsico's restructuring costs in FY2022 amounted to $411 million .",
-      "token_f1": 0.0667,
+      "token_f1": 0.0444,
       "exact_match": 1.0,
-      "latency_sec": 8.23
+      "latency_sec": 30.618
     },
     {
       "id": "fb_123",
@@ -1270,7 +1270,7 @@
       "reference_answer": "$9068.00",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 16.946
+      "latency_sec": 65.837
     },
     {
       "id": "fb_124",
@@ -1280,7 +1280,7 @@
       "reference_answer": "16.5%",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 21.093
+      "latency_sec": 77.424
     },
     {
       "id": "fb_125",
@@ -1288,9 +1288,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "The shareholder proposal for a congruency report by Pepsico on net-zero emissions policies was defeated.",
-      "token_f1": 0.1831,
+      "token_f1": 0.0825,
       "exact_match": 0.0,
-      "latency_sec": 2.942
+      "latency_sec": 23.554
     },
     {
       "id": "fb_126",
@@ -1298,9 +1298,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "$400,000,000 increase.",
-      "token_f1": 0.0,
+      "token_f1": 0.0064,
       "exact_match": 0.0,
-      "latency_sec": 7.807
+      "latency_sec": 31.917
     },
     {
       "id": "fb_127",
@@ -1308,9 +1308,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Total amount Pepsico may borrow under unsecured revolving credit agreements = $8,400,000,000.",
-      "token_f1": 0.1053,
+      "token_f1": 0.0649,
       "exact_match": 0.0,
-      "latency_sec": 10.556
+      "latency_sec": 30.922
     },
     {
       "id": "fb_128",
@@ -1318,9 +1318,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Pepsico experienced a strong start to FY2023.",
-      "token_f1": 0.0369,
-      "exact_match": 0.0,
-      "latency_sec": 11.846
+      "token_f1": 0.0236,
+      "exact_match": 1.0,
+      "latency_sec": 37.559
     },
     {
       "id": "fb_129",
@@ -1328,9 +1328,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Pepsico raised full year guidance in respect of core constant currency EPS growth by 1 percentage point.",
-      "token_f1": 0.1456,
+      "token_f1": 0.0888,
       "exact_match": 1.0,
-      "latency_sec": 19.591
+      "latency_sec": 35.799
     },
     {
       "id": "fb_130",
@@ -1338,9 +1338,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes, change in PPNE was positive year over year",
-      "token_f1": 0.0316,
+      "token_f1": 0.022,
       "exact_match": 1.0,
-      "latency_sec": 9.695
+      "latency_sec": 41.145
     },
     {
       "id": "fb_131",
@@ -1348,9 +1348,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes, the gain on completion of Consumer Healthcare JV Transaction",
-      "token_f1": 0.0245,
+      "token_f1": 0.0271,
       "exact_match": 1.0,
-      "latency_sec": 16.595
+      "latency_sec": 56.408
     },
     {
       "id": "fb_132",
@@ -1358,9 +1358,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Trillium, Array, and Therachon",
-      "token_f1": 0.012,
+      "token_f1": 0.0061,
       "exact_match": 1.0,
-      "latency_sec": 6.627
+      "latency_sec": 43.843
     },
     {
       "id": "fb_133",
@@ -1370,7 +1370,7 @@
       "reference_answer": "77.78",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 12.422
+      "latency_sec": 34.908
     },
     {
       "id": "fb_134",
@@ -1378,9 +1378,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Developed Rest of the World",
-      "token_f1": 0.0225,
+      "token_f1": 0.0203,
       "exact_match": 0.0,
-      "latency_sec": 8.898
+      "latency_sec": 43.925
     },
     {
       "id": "fb_135",
@@ -1388,9 +1388,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes, it's spinning off Upjohn.",
-      "token_f1": 0.0364,
+      "token_f1": 0.0114,
       "exact_match": 1.0,
-      "latency_sec": 5.206
+      "latency_sec": 35.407
     },
     {
       "id": "fb_136",
@@ -1398,9 +1398,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "There are none",
-      "token_f1": 0.0227,
+      "token_f1": 0.0113,
       "exact_match": 0.0,
-      "latency_sec": 8.841
+      "latency_sec": 40.599
     },
     {
       "id": "fb_137",
@@ -1408,9 +1408,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Ulta Beauty did not make any acquisitions in FY2023 and FY2022.",
-      "token_f1": 0.1215,
+      "token_f1": 0.0604,
       "exact_match": 1.0,
-      "latency_sec": 9.788
+      "latency_sec": 53.759
     },
     {
       "id": "fb_138",
@@ -1418,9 +1418,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Lower marketing expenses and leverage of incentive compensation due to higher sales. The answer here assumes FY2023 refers to the 12 months ended on January 28, 2023 (although the company refers to this period as its fiscal 2022.",
-      "token_f1": 0.0935,
+      "token_f1": 0.0774,
       "exact_match": 1.0,
-      "latency_sec": 24.628
+      "latency_sec": 19.915
     },
     {
       "id": "fb_139",
@@ -1428,9 +1428,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Increase in Merchandise inventories balance was driven by the opening of 47 new stores. The answer here assumes FY2023 refers to the 12 months ended on January 28, 2023 (although the company refers to this period as its fiscal 2022.",
-      "token_f1": 0.1606,
+      "token_f1": 0.0875,
       "exact_match": 1.0,
-      "latency_sec": 11.737
+      "latency_sec": 46.994
     },
     {
       "id": "fb_140",
@@ -1438,9 +1438,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "36%. The answer here assumes FY2023 refers to the 12 months ended on January 28, 2023 (although the company refers to this period as its fiscal 2022.",
-      "token_f1": 0.0543,
+      "token_f1": 0.0557,
       "exact_match": 1.0,
-      "latency_sec": 19.52
+      "latency_sec": 44.715
     },
     {
       "id": "fb_141",
@@ -1448,9 +1448,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Wages expense as a percent of net sales increased in FY2023. The answer here assumes FY2023 refers to the 12 months ended on January 28, 2023 (although the company refers to this period as its fiscal 2022.",
-      "token_f1": 0.185,
+      "token_f1": 0.1063,
       "exact_match": 1.0,
-      "latency_sec": 26.475
+      "latency_sec": 75.681
     },
     {
       "id": "fb_142",
@@ -1458,9 +1458,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Cross currency swaps. Its notional value was $32,502 million.",
-      "token_f1": 0.0242,
+      "token_f1": 0.0303,
       "exact_match": 0.0,
-      "latency_sec": 77.815
+      "latency_sec": 28.793
     },
     {
       "id": "fb_143",
@@ -1468,9 +1468,9 @@
       "question_type": "novel-generated",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "The estimated pension benefits were $1097 million, and the estimated health care and life insurance benefits were $862 million.",
-      "token_f1": 0.0276,
+      "token_f1": 0.0244,
       "exact_match": 1.0,
-      "latency_sec": 12.365
+      "latency_sec": 56.876
     },
     {
       "id": "fb_144",
@@ -1478,9 +1478,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "No. The quick ratio was approximately 0.54 for Verizon. It indicated that Verizon does not have a healthy liquidity profile.",
-      "token_f1": 0.1167,
+      "token_f1": 0.0631,
       "exact_match": 0.0,
-      "latency_sec": 20.451
+      "latency_sec": 53.331
     },
     {
       "id": "fb_145",
@@ -1488,9 +1488,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "Yes. Verizon's capital intensity ratio was approximately 2.774729. This means that it took approximately $2.77 of assets to generate $1 of revenue and thus, Verizon can be considered capital intensive.",
-      "token_f1": 0.0935,
+      "token_f1": 0.0839,
       "exact_match": 1.0,
-      "latency_sec": 32.135
+      "latency_sec": 41.839
     },
     {
       "id": "fb_146",
@@ -1498,9 +1498,9 @@
       "question_type": "domain-relevant",
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "No. Verizon's debt decreased by $229 million.",
-      "token_f1": 0.0309,
+      "token_f1": 0.0263,
       "exact_match": 0.0,
-      "latency_sec": 47.171
+      "latency_sec": 42.561
     },
     {
       "id": "fb_147",
@@ -1510,7 +1510,7 @@
       "reference_answer": "42.69",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 33.472
+      "latency_sec": 69.084
     },
     {
       "id": "fb_148",
@@ -1519,8 +1519,8 @@
       "predicted_answer": "<|im_start|>system\nYou are a highly capable financial analysis assistant. \nYou have access to a suite of tools to answer questions about companies, market events, and financial reports.\n\nIMPORTANT GUIDELINES:\n1. For specific financial data, SEC filings, or historical reports, ALWAYS use 'rag_search' first.\n2. For current news, recent market events, or real-time information, use 'web_search'.\n3. For calculations (e.g., margins, growth rates), use 'calculator' for simple math, and 'python_repl' fo",
       "reference_answer": "0.2%",
       "token_f1": 0.0,
-      "exact_match": 0.0,
-      "latency_sec": 32.725
+      "exact_match": 1.0,
+      "latency_sec": 52.052
     },
     {
       "id": "fb_149",
@@ -1530,7 +1530,7 @@
       "reference_answer": "6.2%",
       "token_f1": 0.0,
       "exact_match": 0.0,
-      "latency_sec": 42.788
+      "latency_sec": 67.807
     }
   ]
 }
