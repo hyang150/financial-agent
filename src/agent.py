@@ -9,7 +9,7 @@ from typing import Optional, Dict, Any, List
 
 from langgraph.prebuilt import create_react_agent
 from langchain_core.messages import HumanMessage
-from langchain_community.chat_models.huggingface import ChatHuggingFace
+from langchain_huggingface import ChatHuggingFace
 from langchain_huggingface import HuggingFacePipeline
 
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
@@ -145,7 +145,7 @@ class FinanceAgent:
         self.agent_executor = create_react_agent(
             model=self.chat_model,
             tools=self.tools,
-            state_modifier=SYSTEM_PROMPT
+            prompt=SYSTEM_PROMPT
         )
 
         print("✅ Graph Agent ready to use")

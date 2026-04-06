@@ -23,8 +23,14 @@ FinanceBench 基准评估脚本。
   # Step 2: 仅检索评估（本地 CPU 可跑）
   python data/eval/eval_financebench.py retrieval --db-path data/vector_db
 
+  # Step 2b: 只评估指定 ticker（过滤掉你没有数据的公司）
+  python data/eval/eval_financebench.py retrieval --tickers AAPL MSFT TSLA
+
   # Step 3: 端到端评估（需 GPU 加载 LLM）
   python data/eval/eval_financebench.py e2e --db-path data/vector_db
+
+  # Step 3b: 端到端只评估指定 ticker
+  python data/eval/eval_financebench.py e2e --tickers AAPL MSFT TSLA
 
   # Step 4: 查看报告
   python data/eval/eval_financebench.py show --report data/eval/financebench_report.json
@@ -331,6 +337,21 @@ def cmd_retrieval(args) -> int:
         print("错误: golden 文件中无 items")
         return 1
 
+    # ---------- ticker 过滤 ----------
+    if args.tickers:
+        tickers_upper = {t.upper() for t in args.tickers}
+        original_count = len(items)
+        items = [
+            it for it in items
+            if any(t.upper() in tickers_upper
+                   for t in it.get("source_should_contain", []))
+        ]
+        print(f"Ticker 过滤: {tickers_upper}")
+        print(f"  原始 {original_count} 条 → 筛选后 {len(items)} 条")
+        if not items:
+            print("错误: 过滤后无匹配条目。请检查 ticker 是否正确。")
+            return 1
+
     print(f"加载 {len(items)} 条 FinanceBench 查询")
     print(f"向量库: {args.db_path}")
     print(f"Rerank: {'关闭' if args.no_rerank else '开启'}")
@@ -532,6 +553,21 @@ def cmd_e2e(args) -> int:
     if not items:
         print("错误: golden 文件中无 items")
         return 1
+
+    # ---------- ticker 过滤 ----------
+    if args.tickers:
+        tickers_upper = {t.upper() for t in args.tickers}
+        original_count = len(items)
+        items = [
+            it for it in items
+            if any(t.upper() in tickers_upper
+                   for t in it.get("source_should_contain", []))
+        ]
+        print(f"Ticker 过滤: {tickers_upper}")
+        print(f"  原始 {original_count} 条 → 筛选后 {len(items)} 条")
+        if not items:
+            print("错误: 过滤后无匹配条目。请检查 ticker 是否正确。")
+            return 1
 
     # 可选限制评估条数（端到端较慢）
     if args.limit and args.limit < len(items):
@@ -812,6 +848,10 @@ def main() -> int:
     p_ret.add_argument("--golden", default=str(DEFAULT_GOLDEN), help="FinanceBench golden JSON")
     p_ret.add_argument("--output", "-o", default=str(DEFAULT_REPORT), help="输出报告路径")
     p_ret.add_argument("--no-rerank", action="store_true", help="关闭 Cross-Encoder 重排")
+    p_ret.add_argument(
+        "--tickers", "-t", nargs="+", default=None,
+        help="只评估指定 ticker 的问题，例如: --tickers AAPL MSFT TSLA",
+    )
 
     # --- e2e ---
     p_e2e = sub.add_parser("e2e", help="端到端评估（需要 LLM + GPU）")
@@ -821,6 +861,10 @@ def main() -> int:
     p_e2e.add_argument("--model", "-m", default="Qwen/Qwen2.5-7B-Instruct", help="LLM 模型")
     p_e2e.add_argument("--device", default="cuda", choices=["cuda", "cpu"], help="设备")
     p_e2e.add_argument("--limit", type=int, default=None, help="限制评估条数（端到端较慢）")
+    p_e2e.add_argument(
+        "--tickers", "-t", nargs="+", default=None,
+        help="只评估指定 ticker 的问题，例如: --tickers AAPL MSFT TSLA",
+    )
 
     # --- report ---
     p_rpt = sub.add_parser("report", help="对比两份评估报告")
